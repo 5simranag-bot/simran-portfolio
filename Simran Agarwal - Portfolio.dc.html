@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700;800&amp;family=Zen+Kaku+Gothic+New:wght@300;400;500;700&amp;family=DM+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:#ece2d1;color:#2b2722;font-family:'Zen Kaku Gothic New',system-ui,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:clip;}
+  ::selection{background:#b14b34;color:#f6efe2;}
+  a{color:inherit;text-decoration:none;}
+  button{font-family:inherit;cursor:pointer;}
+  :focus-visible{outline:2px solid #b14b34;outline-offset:3px;border-radius:2px;}
+  input,textarea{font-family:inherit;}
+  @keyframes cloudMove{from{transform:translate3d(-32vw,0,0)}to{transform:translate3d(132vw,0,0)}}
+  @keyframes moteFloat{0%{transform:translate3d(0,0,0);opacity:0}12%{opacity:.7}88%{opacity:.5}100%{transform:translate3d(22px,-130px,0);opacity:0}}
+  @keyframes birdFly{0%{transform:translate3d(-12vw,0,0)}50%{transform:translate3d(55vw,-26px,0)}100%{transform:translate3d(122vw,12px,0)}}
+  @keyframes sunPulse{0%,100%{opacity:.9;transform:scale(1)}50%{opacity:1;transform:scale(1.04)}}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(9px)}}
+  @keyframes sway{0%,100%{transform:rotate(-1.1deg)}50%{transform:rotate(1.1deg)}}
+  @keyframes swaySoft{0%,100%{transform:translateY(0) rotate(-.5deg)}50%{transform:translateY(-5px) rotate(.5deg)}}
+  @keyframes shimmer{0%{background-position:0% 50%}100%{background-position:200% 50%}}
+  @keyframes grow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+  @media (prefers-reduced-motion: reduce){*{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
+  @media (max-width:980px){
+    .rail{display:none!important;}
+    .about-grid{grid-template-columns:1fr!important;}
+    .contact-grid{grid-template-columns:1fr!important;}
+    .methods-grid{grid-template-columns:1fr!important;}
+    .doors-grid{grid-template-columns:1fr 1fr!important;}
+    .process-grid{grid-template-columns:1fr 1fr 1fr!important;row-gap:34px!important;}
+    .path-line{display:none!important;}
+  }
+  @media (max-width:680px){
+    .nav-desktop{display:none!important;}
+    .nav-burger{display:flex!important;}
+    .doors-grid{grid-template-columns:1fr 1fr!important;}
+    .process-grid{grid-template-columns:1fr 1fr!important;}
+    .case-cols{grid-template-columns:1fr!important;}
+    .karna-feature{grid-template-columns:1fr!important;}
+    .karna-phones{display:none!important;}
+  }
+  @media (max-width:440px){
+    .doors-grid{grid-template-columns:1fr!important;}
+    .process-grid{grid-template-columns:1fr!important;}
+  }
+</style>
+</helmet>
+
+<div id="jr" style="position:relative;width:100%;overflow-x:clip;background:#ece2d1;">
+
+  <!-- ================= NAV ================= -->
+  <nav aria-label="Primary" style="position:fixed;top:0;left:0;right:0;z-index:80;display:flex;align-items:center;justify-content:space-between;padding:20px clamp(20px,4vw,52px);background:linear-gradient(180deg,rgba(245,239,228,.82),rgba(245,239,228,0));backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);">
+    <a href="#hero" aria-label="Simran Agarwal home" style="display:flex;align-items:center;gap:13px;">
+      <span aria-hidden="true" style="display:grid;place-items:center;width:38px;height:38px;border:1.5px solid #b14b34;color:#b14b34;font-family:'Shippori Mincho',serif;font-size:20px;line-height:1;border-radius:3px;">道</span>
+      <span style="display:flex;flex-direction:column;line-height:1.1;">
+        <span style="font-family:'Shippori Mincho',serif;font-size:16px;font-weight:600;letter-spacing:.04em;color:#2b2722;">Simran Agarwal</span>
+        <span style="font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:#9a8f7e;margin-top:2px;">Senior UX Designer</span>
+      </span>
+    </a>
+    <div style="display:flex;align-items:center;gap:clamp(14px,2.4vw,34px);">
+      <div class="nav-desktop" style="display:flex;align-items:center;gap:clamp(14px,2.4vw,34px);">
+        <sc-for list="{{ navLinks }}" as="link" hint-placeholder-count="4">
+          <a href="{{ link.href }}" onClick="{{ link.onClick }}" style="font-size:13.5px;letter-spacing:.03em;color:#4a4236;padding:6px 2px;position:relative;transition:color .3s;" style-hover="color:#b14b34;">{{ link.label }}</a>
+        </sc-for>
+      </div>
+      <a href="Resume.dc.html" style="display:inline-flex;align-items:center;gap:8px;font-size:13px;letter-spacing:.04em;color:#f6efe2;background:#b14b34;padding:9px 18px;border-radius:999px;transition:transform .3s,background .3s;" style-hover="transform:translateY(-2px);background:#9a3f2b;">Résumé<span aria-hidden="true" style="font-size:11px;">↗</span></a>
+      <button class="nav-burger" onClick="{{ toggleNav }}" aria-label="Open menu" aria-expanded="{{ navOpen }}" style="display:none;width:40px;height:40px;border:1px solid #d8cdbb;background:rgba(255,255,255,.4);border-radius:8px;align-items:center;justify-content:center;flex-direction:column;gap:4px;transition:background .3s;" style-hover="background:rgba(177,75,52,.12);">
+        <span aria-hidden="true" style="width:16px;height:1.5px;background:#2b2722;"></span>
+        <span aria-hidden="true" style="width:16px;height:1.5px;background:#2b2722;"></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- mobile menu -->
+  <sc-if value="{{ navOpen }}" hint-placeholder-val="{{ false }}">
+    <div style="position:fixed;inset:0;z-index:79;background:rgba(236,226,209,.97);backdrop-filter:blur(6px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;">
+      <sc-for list="{{ navLinks }}" as="link" hint-placeholder-count="4">
+        <a href="{{ link.href }}" onClick="{{ link.onClickClose }}" style="font-family:'Shippori Mincho',serif;font-size:30px;color:#2b2722;">{{ link.label }}</a>
+      </sc-for>
+      <button onClick="{{ closeNav }}" aria-label="Close menu" style="margin-top:18px;font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:#b14b34;background:none;border:none;">Close ✕</button>
+    </div>
+  </sc-if>
+
+  <!-- ================= PROGRESS RAIL ================= -->
+  <div aria-hidden="true" class="rail" style="position:fixed;right:clamp(16px,2.4vw,34px);top:50%;transform:translateY(-50%);z-index:70;display:flex;flex-direction:column;gap:20px;">
+    <sc-for list="{{ peaks }}" as="peak" hint-placeholder-count="5">
+      <button onClick="{{ peak.onClick }}" aria-label="{{ peak.aria }}" style="display:flex;align-items:center;gap:11px;background:none;border:none;padding:0;justify-content:flex-end;transition:transform .3s;" style-hover="transform:translateX(-3px);">
+        <span style="{{ peak.labelStyle }}">{{ peak.label }}</span>
+        <span style="{{ peak.dotStyle }}"></span>
+      </button>
+    </sc-for>
+  </div>
+
+  <!-- ================= HERO ================= -->
+  <header id="hero" data-screen-label="Hero" style="position:relative;height:100vh;min-height:620px;width:100%;overflow:hidden;background:linear-gradient(180deg,#f6efe2 0%,#f1e7d6 46%,#e8dcc8 100%);">
+    <!-- sun -->
+    <div data-parallax="0.06" data-anchor="hero" style="position:absolute;top:16%;left:58%;width:min(340px,46vw);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#fdf7ea 0%,#f9edd2 38%,rgba(246,228,196,.4) 60%,rgba(246,228,196,0) 72%);animation:sunPulse 9s ease-in-out infinite;pointer-events:none;"></div>
+    <!-- atmosphere: clouds, motes, birds (built in logic) -->
+    <div style="position:absolute;inset:0;pointer-events:none;">{{ atmosphere }}</div>
+    <!-- mist band -->
+    <div data-parallax="0.05" data-anchor="hero" style="position:absolute;bottom:30%;left:-5%;width:110%;height:120px;background:radial-gradient(ellipse 60% 100% at 50% 60%,rgba(250,244,233,.85),rgba(250,244,233,0));filter:blur(6px);pointer-events:none;"></div>
+
+    <!-- mountain layers (back -> front) -->
+    <svg data-parallax="0.05" data-mouse="8" data-anchor="hero" viewBox="0 0 1440 520" preserveAspectRatio="xMidYMax meet" style="position:absolute;bottom:0;left:-10%;width:120%;height:auto;display:block;pointer-events:none;"><path d="M0,310 L180,250 L300,290 L470,228 L640,285 L820,236 L1010,288 L1220,248 L1380,300 L1440,278 L1440,520 L0,520Z" fill="#d9ccb5"></path></svg>
+    <svg data-parallax="0.10" data-mouse="16" data-anchor="hero" viewBox="0 0 1440 520" preserveAspectRatio="xMidYMax meet" style="position:absolute;bottom:0;left:-10%;width:120%;height:auto;display:block;pointer-events:none;"><path d="M0,350 L150,300 L320,345 L520,272 L700,335 L900,284 L1120,340 L1300,294 L1440,330 L1440,520 L0,520Z" fill="#ccba9d"></path></svg>
+    <svg data-parallax="0.17" data-mouse="26" data-anchor="hero" viewBox="0 0 1440 520" preserveAspectRatio="xMidYMax meet" style="position:absolute;bottom:0;left:-10%;width:120%;height:auto;display:block;pointer-events:none;"><path d="M0,400 L220,330 L430,395 L640,318 L880,385 L1080,330 L1300,390 L1440,360 L1440,520 L0,520Z" fill="#bca887"></path></svg>
+    <svg data-parallax="0.27" data-mouse="40" data-anchor="hero" viewBox="0 0 1440 520" preserveAspectRatio="xMidYMax meet" style="position:absolute;bottom:0;left:-10%;width:120%;height:auto;display:block;pointer-events:none;"><path d="M0,442 L260,382 L500,442 L760,360 L1000,436 L1240,386 L1440,420 L1440,520 L0,520Z" fill="#a78f6c"></path></svg>
+
+    <!-- figure on the foreground cliff -->
+    <div data-parallax="0.30" data-mouse="24" data-anchor="hero" style="position:absolute;bottom:8.5%;right:-1%;z-index:4;width:clamp(330px,45vw,600px);pointer-events:none;">
+      <div style="position:relative;animation:swaySoft 8.5s ease-in-out infinite;transform-origin:bottom center;">
+        <div aria-hidden="true" style="position:absolute;left:46%;bottom:1%;transform:translateX(-50%);width:46%;height:24px;background:radial-gradient(ellipse,rgba(43,39,34,.30),rgba(43,39,34,0) 70%);filter:blur(6px);"></div>
+        <img src="assets/kimono-walk.png" alt="Simran a woman in a flowing coral kimono walking along the cliff edge, hair streaming in the wind, gazing toward the distant mountains" style="position:relative;width:100%;height:auto;display:block;transform:scaleX(-1);filter:drop-shadow(0 22px 30px rgba(43,39,34,.22));">
+      </div>
+    </div>
+
+    <!-- foreground cliff -->
+    <svg data-parallax="0.42" data-mouse="54" data-anchor="hero" viewBox="0 0 1440 220" preserveAspectRatio="none" style="position:absolute;bottom:0;left:-6%;width:112%;height:26%;display:block;z-index:3;pointer-events:none;"><path d="M0,90 C200,84 360,108 520,96 C700,82 820,66 980,72 C1140,78 1300,100 1440,84 L1440,220 L0,220Z" fill="#6e5b43"></path></svg>
+
+    <!-- hero copy -->
+    <div style="position:absolute;inset:0;z-index:6;display:flex;flex-direction:column;justify-content:center;padding:0 clamp(22px,7vw,120px);pointer-events:none;">
+      <span data-reveal="" style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.42em;text-transform:uppercase;color:#b14b34;margin-bottom:22px;"><b>The Journey of a Designer</b></span>
+      <h1 data-reveal="" data-reveal-delay="120" style="margin:0;font-family:'Shippori Mincho',serif;font-weight:600;font-size:clamp(46px,8.4vw,116px);line-height:.96;letter-spacing:-.01em;color:#241f1a;text-shadow:0 1px 0 rgba(255,255,255,.3);max-width:14ch;">Simran<br>Agarwal</h1>
+      <p data-reveal="" data-reveal-delay="240" style="margin:26px 0 0;font-size:clamp(15px,1.7vw,20px);line-height:1.7;color:#574d3f;max-width:34ch;font-weight:300;"><b>Senior UX Designer turning fragmented, complex enterprise workflows into experiences that feel quietly effortless.</b></p>
+      <div data-reveal="" data-reveal-delay="360" style="display:flex;flex-wrap:wrap;align-items:center;gap:18px;margin-top:38px;pointer-events:auto;">
+        <button onClick="{{ beginJourney }}" style="display:inline-flex;align-items:center;gap:12px;background:#2b2722;color:#f4ead9;border:none;padding:16px 30px;border-radius:999px;font-size:14.5px;letter-spacing:.04em;box-shadow:0 16px 34px -18px rgba(43,39,34,.7);transition:transform .4s cubic-bezier(.16,.8,.24,1),background .4s;" style-hover="transform:translateY(-3px);background:#3a342b;">Begin the Journey<span aria-hidden="true" style="font-size:13px;">↓</span></button>
+        <a href="#work" onClick="{{ goWork }}" style="display:inline-flex;align-items:center;gap:9px;font-size:13.5px;letter-spacing:.1em;text-transform:uppercase;color:#b14b34;background:rgba(177,75,52,.06);border:1.5px solid #b14b34;padding:15px 28px;border-radius:999px;transition:background .35s,color .35s,transform .35s;" style-hover="background:#b14b34;color:#f4ead9;transform:translateY(-3px);"><b>Skip to the work</b><span aria-hidden="true" style="font-size:13px;">→</span></a>
+      </div>
+    </div>
+
+    <!-- scroll cue -->
+    <div aria-hidden="true" style="position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:6;display:flex;flex-direction:column;align-items:center;gap:8px;animation:bob 2.6s ease-in-out infinite;">
+      <span style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:#9a8f7e;"><b>scroll</b></span>
+      <span style="width:1px;height:34px;background:linear-gradient(#b14b34,rgba(177,75,52,0));"></span>
+    </div>
+  </header>
+
+  <!-- ================= MOUNTAIN 1 WHO I AM ================= -->
+  <section id="about" data-screen-label="Mountain 1 Who I Am" style="position:relative;padding:clamp(96px,13vw,180px) 0 0;background:linear-gradient(180deg,#e8dcc8 0%,#f4eddf 30%,#efe6d6 100%);overflow:hidden;">
+    <div style="position:relative;z-index:3;max-width:1120px;margin:0 auto;padding:0 clamp(22px,6vw,64px);">
+      <div data-reveal="" style="display:flex;align-items:center;gap:16px;margin-bottom:18px;">
+        <span style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.3em;color:#b14b34;">峰 01 Mountain One</span>
+        <span style="flex:1;height:1px;background:#d8cdbb;max-width:120px;"></span>
+      </div>
+      <h2 data-reveal="" data-reveal-delay="80" style="margin: 0; font-family: 'Shippori Mincho',serif; font-weight: 600; font-size: clamp(34px,5.4vw,68px); line-height: 1.02; letter-spacing: -.01em; color: #241f1a; position: relative">Who I Am</h2>
+      <div style="display: grid; grid-template-columns: 1.3fr 1fr; gap: clamp(34px,6vw,80px); margin-top: clamp(40px,6vw,64px); align-items: start; position: relative" class="about-grid">
+        <div>
+          <p data-reveal="" style="margin:0;font-family:'Shippori Mincho',serif;font-size:clamp(20px,2.5vw,30px);line-height:1.5;color:#3a342b;font-weight:500;">I turn fragmented, complex workflows into experiences that feel quietly effortless.</p>
+          <p data-reveal="" data-reveal-delay="100" style="margin:24px 0 0;font-size:16px;line-height:1.85;color:#574d3f;font-weight:300;"><b>I'm a Senior UX Designer with 5+ years across enterprise SaaS platforms, internal tools and complex B2B systems. I specialise in transforming tangled workflows into streamlined experiences through user-centred research, data visualisation and design systems partnering closely with engineering and facilitating workshops to drive product strategy. I trained as an architect, and still design the way I learned to build: structure first, then light.</b></p>
+          <div data-reveal="" data-reveal-delay="180" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:30px;">
+            <sc-for list="{{ principles }}" as="p" hint-placeholder-count="4">
+              <span style="font-size:12.5px;letter-spacing:.04em;color:#6b6052;border:1px solid #d8cdbb;background:rgba(255,255,255,.45);padding:8px 15px;border-radius:999px;white-space:nowrap;">{{ p }}</span>
+            </sc-for>
+          </div>
+          <div data-reveal="" data-reveal-delay="240" style="display:flex;gap:clamp(24px,5vw,52px);margin-top:42px;">
+            <sc-for list="{{ stats }}" as="s" hint-placeholder-count="3">
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <span style="font-family:'Shippori Mincho',serif;font-size:clamp(34px,4.6vw,52px);font-weight:700;color:#b14b34;line-height:1;">{{ s.v }}</span>
+                <span style="font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#9a8f7e;">{{ s.l }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+        <!-- timeline + shrine -->
+        <div data-reveal="" data-reveal-delay="120" style="position:relative;border-left:1px solid #d8cdbb;padding-left:26px;">
+          
+          <div style="position:relative;padding:0 0 30px;">
+            <span aria-hidden="true" style="position:absolute;left:-32px;top:5px;width:9px;height:9px;border-radius:50%;background:#b14b34;box-shadow:0 0 0 4px rgba(177,75,52,.14);"></span>
+            <span style="font-family:'DM Mono',monospace;font-size:12px;color:#b14b34;letter-spacing:.06em;">2016</span>
+            <h3 style="margin:3px 0 5px;font-family:'Shippori Mincho',serif;font-size:18px;font-weight:600;color:#2b2722;">Studied architecture</h3>
+            <p style="margin:0;font-size:13.5px;line-height:1.65;color:#6b6052;font-weight:300;"><b>Bachelor of Architecture at the School of Architecture, AGI Jaipur where I learned to design for how people move through space.</b></p>
+          </div>
+          <div style="position:relative;padding:0 0 30px;">
+            <span aria-hidden="true" style="position:absolute;left:-32px;top:5px;width:9px;height:9px;border-radius:50%;background:#b14b34;box-shadow:0 0 0 4px rgba(177,75,52,.14);"></span>
+            <span style="font-family:'DM Mono',monospace;font-size:12px;color:#b14b34;letter-spacing:.06em;">2021</span>
+            <h3 style="margin:3px 0 5px;font-family:'Shippori Mincho',serif;font-size:18px;font-weight:600;color:#2b2722;">First product role</h3>
+            <p style="margin:0;font-size:13.5px;line-height:1.65;color:#6b6052;font-weight:300;"><b>UX/UI Designer at Warpspd designing B2B SaaS interfaces and internal workflow tools from the ground up, end to end with engineering.</b></p>
+          </div>
+          <div style="position:relative;padding:0 0 30px;">
+            <span aria-hidden="true" style="position:absolute;left:-32px;top:5px;width:9px;height:9px;border-radius:50%;background:#b14b34;box-shadow:0 0 0 4px rgba(177,75,52,.14);"></span>
+            <span style="font-family:'DM Mono',monospace;font-size:12px;color:#b14b34;letter-spacing:.06em;">2022</span>
+            <h3 style="margin:3px 0 5px;font-family:'Shippori Mincho',serif;font-size:18px;font-weight:600;color:#2b2722;">Dashboards &amp; systems</h3>
+            <p style="margin:0;font-size:13.5px;line-height:1.65;color:#6b6052;font-weight:300;"><b>UX/UI Designer at Metafic owned the full design lifecycle and lifted user satisfaction 35% through iterative usability testing.</b></p>
+          </div>
+          <div style="position:relative;padding:0 0 30px;">
+            <span aria-hidden="true" style="position:absolute;left:-32px;top:5px;width:9px;height:9px;border-radius:50%;background:#b14b34;box-shadow:0 0 0 4px rgba(177,75,52,.14);"></span>
+            <span style="font-family:'DM Mono',monospace;font-size:12px;color:#b14b34;letter-spacing:.06em;">2023</span>
+            <h3 style="margin:3px 0 5px;font-family:'Shippori Mincho',serif;font-size:18px;font-weight:600;color:#2b2722;">Leading enterprise UX</h3>
+            <p style="margin:0;font-size:13.5px;line-height:1.65;color:#6b6052;font-weight:300;"><b>UX Designer at Michelin+40% efficiency for 500+ stakeholders on a Figma design system that cut design-to-development time 30%.</b></p>
+          </div>
+        </div>
+      <span style="position: absolute; top: 2px; left: -26px; font-family: 'Shippori Mincho',serif; font-size: 11px; letter-spacing: .24em; text-transform: uppercase; color: #9a8f7e; writing-mode: vertical-rl">The climb so far</span></div>
+    </div>
+    <!-- mountain footer w/ torii shrine -->
+    <div style="position:relative;height:clamp(180px,24vw,300px);margin-top:clamp(40px,6vw,72px);">
+      <svg data-parallax="0.07" data-anchor="about" viewBox="0 0 1440 360" preserveAspectRatio="none" style="position:absolute;bottom:0;left:0;width:100%;height:80%;display:block;"><path d="M0,160 L240,110 L470,165 L700,100 L940,160 L1180,110 L1440,150 L1440,360 L0,360Z" fill="#d6c9b3"></path></svg>
+      <svg data-parallax="0.13" data-anchor="about" viewBox="0 0 1440 360" preserveAspectRatio="none" style="position:absolute;bottom:0;left:0;width:100%;height:90%;display:block;"><path d="M0,220 L300,165 L560,225 L820,150 L1080,215 L1320,165 L1440,195 L1440,360 L0,360Z" fill="#c2ad8c"></path></svg>
+      <!-- torii gate -->
+      <div data-parallax="0.20" data-anchor="about" aria-hidden="true" style="position:absolute;bottom:14%;left:50%;transform:translateX(-50%);width:clamp(120px,15vw,180px);height:clamp(96px,12vw,150px);z-index:2;">
+        <div style="position:absolute;top:0;left:-9%;width:118%;height:14%;background:#b14b34;border-radius:4px;box-shadow:0 4px 8px -3px rgba(43,39,34,.5);"></div>
+        <div style="position:absolute;top:20%;left:2%;width:96%;height:9%;background:#9a3f2b;border-radius:3px;"></div>
+        <div style="position:absolute;top:14%;left:14%;width:8%;height:86%;background:#b14b34;"></div>
+        <div style="position:absolute;top:14%;right:14%;width:8%;height:86%;background:#b14b34;"></div>
+      </div>
+      <svg data-parallax="0.22" data-anchor="about" viewBox="0 0 1440 360" preserveAspectRatio="none" style="position:absolute;bottom:0;left:0;width:100%;height:62%;display:block;z-index:3;"><path d="M0,280 L360,235 L680,285 L1000,225 L1280,280 L1440,255 L1440,360 L0,360Z" fill="#6f5c44"></path></svg>
+    </div>
+  </section>
+
+  <!-- ================= MOUNTAIN 2 WHAT I CREATE ================= -->
+  <section id="work" data-screen-label="Mountain 2 What I Create" style="position:relative;padding:clamp(96px,13vw,170px) 0 clamp(90px,12vw,150px);background:linear-gradient(180deg,#6f5c44 0%,#8a7457 8%,#cdb591 26%,#f6efe0 60%,#efe3cf 100%);overflow:hidden;">
+    <div style="position:relative;z-index:3;max-width:1180px;margin:0 auto;padding:0 clamp(22px,6vw,64px);">
+      <div data-reveal="" style="display:flex;align-items:center;gap:16px;margin-bottom:18px;">
+        <span style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.3em;color:#f0d9b5;">峰 02 Mountain Two</span>
+        <span style="flex:1;height:1px;background:rgba(244,234,217,.35);max-width:120px;"></span>
+      </div>
+      <h2 data-reveal="" data-reveal-delay="80" style="margin:0;font-family:'Shippori Mincho',serif;font-weight:600;font-size:clamp(34px,5.4vw,68px);line-height:1.02;color:#fbf4e6;">What I Create</h2>
+      <p data-reveal="" data-reveal-delay="140" style="margin:18px 0 0;font-size:16px;line-height:1.8;color:#efe3cf;max-width:44ch;font-weight:300;"><b><span style="font-weight: bold; background-color: initial;">A temple housing the work. Step through either shrine to walk a full case study, from the first question to the summit.</span></b></p>
+
+        <a href="POT.dc.html" data-reveal="" style="position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(20px,4vw,46px);align-items:center;margin-top:clamp(40px,6vw,60px);padding:clamp(52px,6vw,74px) clamp(28px,4vw,50px) clamp(30px,4vw,44px);background:linear-gradient(165deg,#2a1f14,#171009);clip-path:polygon(50% 0,100% 8%,100% 100%,0 100%,0 8%);filter:drop-shadow(0 34px 44px rgba(43,39,34,.5));overflow:hidden;transition:transform .5s cubic-bezier(.16,.8,.24,1),filter .5s;" style-hover="transform:translateY(-6px);filter:drop-shadow(0 46px 54px rgba(43,39,34,.62));" class="karna-feature" aria-label="Open the POT Purchase Optimization Tool case study featured project">
+          <span aria-hidden="true" style="position:absolute;top:8%;left:0;right:0;height:7px;background:linear-gradient(90deg,#b8915a,#caa066,#b8915a);"></span>
+          <span aria-hidden="true" style="position:absolute;top:calc(8% + 14px);left:6%;right:6%;height:4px;background:rgba(202,160,102,.5);"></span>
+          <span aria-hidden="true" style="position:absolute;top:2.6%;left:50%;transform:translateX(-50%);width:12px;height:12px;border-radius:50%;background:#caa066;box-shadow:0 0 16px 3px rgba(202,160,102,.6);"></span>
+          <div style="position:relative;">
+            <span style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#caa066;">Featured shrine · Enterprise</span>
+            <h3 style="margin:10px 0 0;font-family:'Shippori Mincho',serif;font-size:clamp(34px,5vw,60px);font-weight:700;letter-spacing:.06em;line-height:.98;color:#f5ead4;">POT</h3>
+            <p style="margin:14px 0 0;font-family:'Shippori Mincho',serif;font-style:italic;font-size:clamp(15px,1.9vw,19px);line-height:1.5;color:#cdb893;max-width:32ch;">Purchase Optimization Tool unifying fragmented procurement into one centralized decision platform.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:22px;">
+              <span style="font-size:12px;color:#d8c6a8;border:1px solid rgba(202,160,102,.34);border-radius:999px;padding:6px 13px;">UX Research</span>
+              <span style="font-size:12px;color:#d8c6a8;border:1px solid rgba(202,160,102,.34);border-radius:999px;padding:6px 13px;">Enterprise SaaS</span>
+              <span style="font-size:12px;color:#d8c6a8;border:1px solid rgba(202,160,102,.34);border-radius:999px;padding:6px 13px;">Systems Thinking</span>
+            </div>
+            <span style="display:inline-flex;align-items:center;gap:9px;margin-top:26px;background:#caa066;color:#15100c;padding:13px 24px;border-radius:999px;font-size:13.5px;letter-spacing:.04em;font-weight:500;">Enter the shrine <span aria-hidden="true">→</span></span>
+          </div>
+          <div class="karna-phones" style="position:relative;display:flex;justify-content:center;align-items:center;min-height:clamp(200px,26vw,290px);">
+            <div style="position:relative;width:300px;height:248px;">
+              <svg viewBox="0 0 300 248" style="position:absolute;inset:0;width:100%;height:100%;" aria-hidden="true"><g stroke="rgba(202,160,102,.45)" stroke-width="1.5" fill="none"><path d="M150,124 L58,46"></path><path d="M150,124 L242,46"></path><path d="M150,124 L58,202"></path><path d="M150,124 L242,202"></path></g></svg>
+              <div style="position:absolute;left:150px;top:124px;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:2px;width:88px;height:88px;justify-content:center;border-radius:14px;background:linear-gradient(160deg,#2a2018,#1d1610);border:1.5px solid #caa066;box-shadow:0 0 0 6px rgba(202,160,102,.08);"><span style="font-family:'Shippori Mincho',serif;font-size:26px;color:#caa066;line-height:1;">統</span><span style="font-family:'Shippori Mincho',serif;font-size:13px;font-weight:700;color:#f3e8d3;letter-spacing:.08em;">POT</span></div>
+              <span style="position:absolute;left:58px;top:46px;transform:translate(-50%,-50%);padding:7px 12px;background:#1d1610;border:1px solid rgba(202,160,102,.3);border-radius:8px;font-size:11.5px;color:#cbb78f;white-space:nowrap;">Requests</span>
+              <span style="position:absolute;left:242px;top:46px;transform:translate(-50%,-50%);padding:7px 12px;background:#1d1610;border:1px solid rgba(202,160,102,.3);border-radius:8px;font-size:11.5px;color:#cbb78f;white-space:nowrap;">Suppliers</span>
+              <span style="position:absolute;left:58px;top:202px;transform:translate(-50%,-50%);padding:7px 12px;background:#1d1610;border:1px solid rgba(202,160,102,.3);border-radius:8px;font-size:11.5px;color:#cbb78f;white-space:nowrap;">Monitoring</span>
+              <span style="position:absolute;left:242px;top:202px;transform:translate(-50%,-50%);padding:7px 12px;background:#1d1610;border:1px solid rgba(202,160,102,.3);border-radius:8px;font-size:11.5px;color:#cbb78f;white-space:nowrap;">Reports</span>
+            </div>
+          </div>
+        </a>
+
+        <a href="Karna.dc.html" data-reveal="" style="position:relative;display:grid;grid-template-columns:1.05fr .95fr;gap:clamp(20px,4vw,46px);align-items:center;margin-top:clamp(24px,3vw,34px);padding:clamp(52px,6vw,74px) clamp(28px,4vw,50px) clamp(30px,4vw,44px);background:linear-gradient(165deg,#2a1f14,#171009);clip-path:polygon(50% 0,100% 8%,100% 100%,0 100%,0 8%);filter:drop-shadow(0 34px 44px rgba(43,39,34,.5));overflow:hidden;transition:transform .5s cubic-bezier(.16,.8,.24,1),filter .5s;" style-hover="transform:translateY(-6px);filter:drop-shadow(0 46px 54px rgba(43,39,34,.62));" class="karna-feature" aria-label="Open the KINDA SHOPEE case study featured project">
+          <span aria-hidden="true" style="position:absolute;top:8%;left:0;right:0;height:7px;background:linear-gradient(90deg,#b8915a,#caa066,#b8915a);"></span>
+          <span aria-hidden="true" style="position:absolute;top:calc(8% + 14px);left:6%;right:6%;height:4px;background:rgba(202,160,102,.5);"></span>
+          <span aria-hidden="true" style="position:absolute;top:2.6%;left:50%;transform:translateX(-50%);width:12px;height:12px;border-radius:50%;background:#caa066;box-shadow:0 0 16px 3px rgba(202,160,102,.6);"></span>
+          <div style="position:relative;">
+            <span style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#caa066;">Featured shrine</span>
+            <h3 style="margin:10px 0 0;font-family:'Shippori Mincho',serif;font-size:clamp(30px,4.6vw,54px);font-weight:700;letter-spacing:.04em;line-height:.98;color:#f5ead4;">KINDA SHOPEE</h3>
+            <p style="margin:16px 0 0;font-family:'Shippori Mincho',serif;font-style:italic;font-size:clamp(15px,1.9vw,19px);line-height:1.5;color:#cdb893;max-width:30ch;">A journey toward thoughtful commerce a calm, trust-led shopping experience for mobile.</p>
+            <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:22px;">
+              <span style="font-size:12px;color:#d8c6a8;border:1px solid rgba(202,160,102,.34);border-radius:999px;padding:6px 13px;">UX Research</span>
+              <span style="font-size:12px;color:#d8c6a8;border:1px solid rgba(202,160,102,.34);border-radius:999px;padding:6px 13px;">Mobile · iOS</span>
+              <span style="font-size:12px;color:#d8c6a8;border:1px solid rgba(202,160,102,.34);border-radius:999px;padding:6px 13px;">Design System</span>
+            </div>
+            <span style="display:inline-flex;align-items:center;gap:9px;margin-top:26px;background:#caa066;color:#15100c;padding:13px 24px;border-radius:999px;font-size:13.5px;letter-spacing:.04em;font-weight:500;">Enter the shrine <span aria-hidden="true">→</span></span>
+          </div>
+          <div class="karna-phones" style="position:relative;display:flex;justify-content:flex-end;align-items:flex-end;gap:14px;min-height:clamp(200px,26vw,290px);">
+            <div style="width:clamp(118px,15vw,156px);border-radius:22px;overflow:hidden;border:5px solid #2a2018;box-shadow:0 24px 40px -20px rgba(0,0,0,.8);transform:translateY(14px) rotate(-3deg);aspect-ratio:375/812;background:#000;">
+              <img src="assets/karna-home.png" alt="KINDA SHOPEE home screen" style="display:block;width:100%;height:100%;object-fit:cover;">
+            </div>
+            <div style="width:clamp(118px,15vw,156px);border-radius:22px;overflow:hidden;border:5px solid #2a2018;box-shadow:0 24px 40px -20px rgba(0,0,0,.8);transform:translateY(-10px) rotate(3deg);aspect-ratio:375/812;background:#000;">
+              <img src="assets/karna-product.png" alt="KINDA SHOPEE product detail screen" style="display:block;width:100%;height:100%;object-fit:cover;">
+            </div>
+          </div>
+        </a>
+    </div>
+  </section>
+
+  <!-- ================= MOUNTAIN 3 HOW I THINK ================= -->
+  <section id="process" data-screen-label="Mountain 3 How I Think" style="position:relative;padding:clamp(96px,13vw,170px) 0 0;background:linear-gradient(180deg,#efe3cf 0%,#eae3d6 40%,#e4ddd0 100%);overflow:hidden;">
+    <div style="position:relative;z-index:3;max-width:1180px;margin:0 auto;padding:0 clamp(22px,6vw,64px);">
+      <div data-reveal="" style="display:flex;align-items:center;gap:16px;margin-bottom:18px;">
+        <span style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.3em;color:#b14b34;">峰 03 Mountain Three</span>
+        <span style="flex:1;height:1px;background:#d8cdbb;max-width:120px;"></span>
+      </div>
+      <h2 data-reveal="" data-reveal-delay="80" style="margin:0;font-family:'Shippori Mincho',serif;font-weight:600;font-size:clamp(34px,5.4vw,68px);line-height:1.02;color:#241f1a;">How I Think</h2>
+      <p data-reveal="" data-reveal-delay="140" style="margin:18px 0 0;font-size:16px;line-height:1.8;color:#574d3f;max-width:46ch;font-weight:300;"><b>Every climb follows the same path six steps from the question no one has framed yet, to the thing people actually use. The terrain changes; the discipline doesn't.</b></p>
+
+      <!-- process path -->
+      <div style="position:relative;margin-top:clamp(44px,6vw,72px);">
+        <div aria-hidden="true" class="path-line" style="position:absolute;top:34px;left:6%;right:6%;height:1px;background:repeating-linear-gradient(90deg,#c9bda9 0 8px,transparent 8px 16px);"></div>
+        <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:clamp(12px,1.6vw,22px);" class="process-grid">
+          <div data-reveal="" style="position:relative;">
+            <div style="position:relative;width:68px;height:68px;border-radius:50%;background:#faf5ec;border:1px solid #d8cdbb;display:grid;place-items:center;font-family:'Shippori Mincho',serif;font-size:19px;font-weight:600;color:#b14b34;box-shadow:0 12px 24px -16px rgba(43,39,34,.5);margin-bottom:20px;">01</div>
+            <h3 style="margin:0 0 7px;font-family:'Shippori Mincho',serif;font-size:18px;font-weight:600;color:#2b2722;">Discover</h3>
+            <p style="margin:0;font-size:13px;line-height:1.6;color:#6b6052;font-weight:300;"><b>Interviews, field study and data until the real problem stops hiding behind the asked one.</b></p>
+          </div>
+          <div data-reveal="" data-reveal-delay="70" style="position:relative;">
+            <div style="position:relative;width:68px;height:68px;border-radius:50%;background:#faf5ec;border:1px solid #d8cdbb;display:grid;place-items:center;font-family:'Shippori Mincho',serif;font-size:19px;font-weight:600;color:#b14b34;box-shadow:0 12px 24px -16px rgba(43,39,34,.5);margin-bottom:20px;">02</div>
+            <h3 style="margin:0 0 7px;font-family:'Shippori Mincho',serif;font-size:18px;font-weight:600;color:#2b2722;">Frame</h3>
+            <p style="margin:0;font-size:13px;line-height:1.6;color:#6b6052;font-weight:300;"><b>Turn messy findings into one sharp question the whole team can rally around.</b></p>
+          </div>
+          <div data-reveal="" data-reveal-delay="140" style="position:relative;">
+            <div style="position:relative;width:68px;height:68px;border-radius:50%;background:#faf5ec;border:1px solid #d8cdbb;display:grid;place-items:center;font-family:'Shippori Mincho',serif;font-size:19px;font-weight:600;color:#b14b34;box-shadow:0 12px 24px -16px rgba(43,39,34,.5);margin-bottom:20px;">03</div>
+            <h3 style="margin:0 0 7px;font-family:'Shippori Mincho',serif;font-size:18px;font-weight:600;color:#2b2722;">Explore</h3>
+            <p style="margin:0;font-size:13px;line-height:1.6;color:#6b6052;font-weight:300;"><b>Diverge widely and cheaply sketches, flows and prototypes before commitment.</b></p>
+          </div>
+          <div data-reveal="" data-reveal-delay="210" style="position:relative;">
+            <div style="position:relative;width:68px;height:68px;border-radius:50%;background:#faf5ec;border:1px solid #d8cdbb;display:grid;place-items:center;font-family:'Shippori Mincho',serif;font-size:19px;font-weight:600;color:#b14b34;box-shadow:0 12px 24px -16px rgba(43,39,34,.5);margin-bottom:20px;">04</div>
+            <h3 style="margin:0 0 7px;font-family:'Shippori Mincho',serif;font-size:18px;font-weight:600;color:#2b2722;">Decide</h3>
+            <p style="margin:0;font-size:13px;line-height:1.6;color:#6b6052;font-weight:300;"><b>Test with real people, kill darlings, choose with evidence over opinion.</b></p>
+          </div>
+          <div data-reveal="" data-reveal-delay="280" style="position:relative;">
+            <div style="position:relative;width:68px;height:68px;border-radius:50%;background:#faf5ec;border:1px solid #d8cdbb;display:grid;place-items:center;font-family:'Shippori Mincho',serif;font-size:19px;font-weight:600;color:#b14b34;box-shadow:0 12px 24px -16px rgba(43,39,34,.5);margin-bottom:20px;">05</div>
+            <h3 style="margin:0 0 7px;font-family:'Shippori Mincho',serif;font-size:18px;font-weight:600;color:#2b2722;">Ship</h3>
+            <p style="margin:0;font-size:13px;line-height:1.6;color:#6b6052;font-weight:300;"><b>Partner closely with engineering so the built thing matches the believed thing.</b></p>
+          </div>
+          <div data-reveal="" data-reveal-delay="350" style="position:relative;">
+            <div style="position:relative;width:68px;height:68px;border-radius:50%;background:#faf5ec;border:1px solid #d8cdbb;display:grid;place-items:center;font-family:'Shippori Mincho',serif;font-size:19px;font-weight:600;color:#b14b34;box-shadow:0 12px 24px -16px rgba(43,39,34,.5);margin-bottom:20px;">06</div>
+            <h3 style="margin:0 0 7px;font-family:'Shippori Mincho',serif;font-size:18px;font-weight:600;color:#2b2722;">Learn</h3>
+            <p style="margin:0;font-size:13px;line-height:1.6;color:#6b6052;font-weight:300;"><b>Measure, listen, and feed what we learn back into the next climb.</b></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- methods + frameworks -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,52px);margin-top:clamp(48px,7vw,84px);" class="methods-grid">
+        <div data-reveal="">
+          <h3 style="margin:0 0 18px;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:#9a8f7e;">Research methods</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:9px;">
+            <sc-for list="{{ methods }}" as="m" hint-placeholder-count="8">
+              <span style="font-size:13px;color:#3a342b;background:rgba(255,255,255,.55);border:1px solid #d8cdbb;padding:9px 16px;border-radius:8px;">{{ m }}</span>
+            </sc-for>
+          </div>
+        </div>
+        <div data-reveal="" data-reveal-delay="120">
+          <h3 style="margin:0 0 18px;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:#9a8f7e;">Frameworks I lean on</h3>
+          <div style="display:flex;flex-wrap:wrap;gap:9px;">
+            <sc-for list="{{ frameworks }}" as="f" hint-placeholder-count="6">
+              <span style="font-size:13px;color:#3a342b;background:rgba(177,75,52,.08);border:1px solid rgba(177,75,52,.28);padding:9px 16px;border-radius:8px;">{{ f }}</span>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- mountain footer -->
+    <div style="position:relative;height:clamp(140px,18vw,230px);margin-top:clamp(48px,7vw,84px);">
+      <svg data-parallax="0.07" data-anchor="process" viewBox="0 0 1440 360" preserveAspectRatio="none" style="position:absolute;bottom:0;left:0;width:100%;height:78%;display:block;"><path d="M0,160 L240,110 L470,165 L700,100 L940,160 L1180,110 L1440,150 L1440,360 L0,360Z" fill="#cdc7ba"></path></svg>
+      <svg data-parallax="0.14" data-anchor="process" viewBox="0 0 1440 360" preserveAspectRatio="none" style="position:absolute;bottom:0;left:0;width:100%;height:88%;display:block;"><path d="M0,220 L300,165 L560,225 L820,150 L1080,215 L1320,165 L1440,195 L1440,360 L0,360Z" fill="#b3ab98"></path></svg>
+      <svg data-parallax="0.22" data-anchor="process" viewBox="0 0 1440 360" preserveAspectRatio="none" style="position:absolute;bottom:0;left:0;width:100%;height:60%;display:block;"><path d="M0,280 L360,235 L680,285 L1000,225 L1280,280 L1440,255 L1440,360 L0,360Z" fill="#5f5848"></path></svg>
+    </div>
+  </section>
+
+  <!-- ================= MOUNTAIN 4 LET'S BUILD TOGETHER ================= -->
+  <section id="contact" data-screen-label="Mountain 4 Let's Build Together" style="position:relative;padding:clamp(110px,15vw,200px) 0 0;background:linear-gradient(180deg,#f7e9cf 0%,#f5dfb6 34%,#eecb95 64%,#e6b87a 100%);overflow:hidden;">
+    <!-- sunrise -->
+    <div aria-hidden="true" style="position:absolute;top:8%;left:50%;transform:translateX(-50%);width:min(520px,72vw);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#fff7ea 0%,#fbeccb 32%,rgba(247,221,176,.5) 56%,rgba(247,221,176,0) 70%);animation:sunPulse 11s ease-in-out infinite;"></div>
+    <div style="position:relative;z-index:3;max-width:1000px;margin:0 auto;padding:0 clamp(22px,6vw,64px);text-align:center;">
+      <div data-reveal="" style="display:inline-flex;align-items:center;gap:16px;margin-bottom:18px;">
+        <span style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.3em;color:#a8552f;">峰 04 The Summit</span>
+      </div>
+      <h2 data-reveal="" data-reveal-delay="80" style="margin:0;font-family:'Shippori Mincho',serif;font-weight:600;font-size:clamp(36px,6vw,76px);line-height:1.02;color:#3a2410;">Let's Build Together</h2>
+      <p data-reveal="" data-reveal-delay="140" style="margin:22px auto 0;font-family:'Shippori Mincho',serif;font-size:clamp(18px,2.4vw,28px);line-height:1.5;color:#6e4724;max-width:24ch;font-weight:500;">Great experiences begin with meaningful conversations.</p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,56px);margin-top:clamp(48px,7vw,76px);text-align:left;" class="contact-grid">
+        <!-- left: links -->
+        <div data-reveal="">
+          <div style="display:flex;flex-direction:column;gap:14px;">
+            <sc-for list="{{ contactLinks }}" as="l" hint-placeholder-count="3">
+              <a href="{{ l.href }}" target="_blank" rel="noopener" style="display:flex;align-items:center;justify-content:space-between;padding:18px 22px;background:rgba(255,250,240,.6);border:1px solid rgba(110,71,36,.18);border-radius:14px;transition:transform .4s cubic-bezier(.16,.8,.24,1),background .4s;" style-hover="transform:translateX(5px);background:rgba(255,250,240,.92);">
+                <span style="display:flex;flex-direction:column;gap:3px;">
+                  <span style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#a8552f;">{{ l.label }}</span>
+                  <span style="font-family:'Shippori Mincho',serif;font-size:18px;font-weight:600;color:#3a2410;">{{ l.value }}</span>
+                </span>
+                <span aria-hidden="true" style="font-size:16px;color:#a8552f;">↗</span>
+              </a>
+            </sc-for>
+            <button onClick="{{ downloadResume }}" style="display:flex;align-items:center;justify-content:space-between;padding:18px 22px;background:#a8552f;border:none;border-radius:14px;transition:transform .4s cubic-bezier(.16,.8,.24,1),background .4s;text-align:left;" style-hover="transform:translateX(5px);background:#934826;">
+              <span style="display:flex;flex-direction:column;gap:3px;">
+                <span style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#f6dcc0;">Résumé</span>
+                <span style="font-family:'Shippori Mincho',serif;font-size:18px;font-weight:600;color:#fff7ea;">View &amp; save as PDF</span>
+              </span>
+              <span aria-hidden="true" style="font-size:16px;color:#fff7ea;">↓</span>
+            </button>
+          </div>
+        </div>
+        <!-- right: form -->
+        <div data-reveal="" data-reveal-delay="120">
+          <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+            <div style="height:100%;min-height:280px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:14px;background:rgba(255,250,240,.6);border:1px solid rgba(110,71,36,.18);border-radius:16px;padding:40px;">
+              <span aria-hidden="true" style="display:grid;place-items:center;width:54px;height:54px;border-radius:50%;background:#a8552f;color:#fff7ea;font-size:24px;">✓</span>
+              <h3 style="margin:0;font-family:'Shippori Mincho',serif;font-size:24px;font-weight:600;color:#3a2410;">Thank you, {{ form.name }}</h3>
+              <p style="margin:0;font-size:14px;color:#6e4724;line-height:1.6;">Your message has reached the summit. I'll be in touch shortly.</p>
+            </div>
+          </sc-if>
+          <sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+            <form onSubmit="{{ submitForm }}" style="display:flex;flex-direction:column;gap:16px;background:rgba(255,250,240,.6);border:1px solid rgba(110,71,36,.18);border-radius:16px;padding:clamp(22px,3vw,32px);">
+              <label style="display:flex;flex-direction:column;gap:7px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#a8552f;">Your name
+                <input required="" value="{{ form.name }}" onInput="{{ setName }}" type="text" placeholder="Jane Doe" style="font-size:15px;color:#3a2410;background:rgba(255,255,255,.7);border:1px solid rgba(110,71,36,.22);border-radius:10px;padding:13px 15px;outline:none;font-weight:400;letter-spacing:normal;text-transform:none;">
+              </label>
+              <label style="display:flex;flex-direction:column;gap:7px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#a8552f;">Email
+                <input required="" value="{{ form.email }}" onInput="{{ setEmail }}" type="email" placeholder="jane@studio.com" style="font-size:15px;color:#3a2410;background:rgba(255,255,255,.7);border:1px solid rgba(110,71,36,.22);border-radius:10px;padding:13px 15px;outline:none;font-weight:400;letter-spacing:normal;text-transform:none;">
+              </label>
+              <label style="display:flex;flex-direction:column;gap:7px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:#a8552f;">Message
+                <textarea required="" value="{{ form.message }}" onInput="{{ setMessage }}" rows="4" placeholder="Tell me about the climb ahead…" style="font-size:15px;color:#3a2410;background:rgba(255,255,255,.7);border:1px solid rgba(110,71,36,.22);border-radius:10px;padding:13px 15px;outline:none;resize:vertical;font-weight:400;letter-spacing:normal;text-transform:none;font-family:inherit;"></textarea>
+              </label>
+              <button type="submit" style="margin-top:4px;background:#2b2722;color:#f4ead9;border:none;padding:15px;border-radius:999px;font-size:14.5px;letter-spacing:.04em;transition:background .4s;" style-hover="background:#3a342b;">Send message →</button>
+            </form>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+    <!-- summit silhouette -->
+    <div style="position:relative;height:clamp(120px,16vw,210px);margin-top:clamp(48px,7vw,80px);">
+      <svg data-parallax="0.06" data-anchor="contact" viewBox="0 0 1440 360" preserveAspectRatio="none" style="position:absolute;bottom:0;left:0;width:100%;height:80%;display:block;"><path d="M0,200 L420,80 L760,210 L1040,90 L1440,200 L1440,360 L0,360Z" fill="#caa066"></path></svg>
+      <svg data-parallax="0.16" data-anchor="contact" viewBox="0 0 1440 360" preserveAspectRatio="none" style="position:absolute;bottom:0;left:0;width:100%;height:62%;display:block;"><path d="M0,280 L360,200 L680,290 L1000,210 L1280,285 L1440,255 L1440,360 L0,360Z" fill="#6e5536"></path></svg>
+    </div>
+    <!-- footer -->
+    <footer style="position:relative;z-index:3;background:#2b2722;color:#cabfaf;padding:clamp(40px,6vw,64px) clamp(22px,6vw,64px) 36px;">
+      <div style="max-width:1180px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:22px;">
+        <div style="display:flex;align-items:center;gap:13px;">
+          <span aria-hidden="true" style="display:grid;place-items:center;width:36px;height:36px;border:1.5px solid #b6855f;color:#d9a877;font-family:'Shippori Mincho',serif;font-size:19px;border-radius:3px;">道</span>
+          <span style="font-family:'Shippori Mincho',serif;font-size:15px;color:#f4ead9;">Simran Agarwal</span>
+        </div>
+        <span style="font-size:12.5px;color:#9a8f7e;letter-spacing:.04em;">The Journey of a Designer crafted with intention · © {{ year }}</span>
+        <button onClick="{{ toTop }}" style="font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#d9a877;background:none;border:1px solid #5a4f40;border-radius:999px;padding:9px 18px;transition:background .3s,border-color .3s;" style-hover="background:rgba(217,168,119,.12);border-color:#d9a877;">Back to base ↑</button>
+      </div>
+    </footer>
+  </section>
+
+  <!-- ================= CASE STUDY OVERLAY ================= -->
+  <sc-if value="{{ activeCase }}" hint-placeholder-val="{{ false }}">
+    <div role="dialog" aria-modal="true" aria-label="{{ activeCase.client }} case study" style="position:fixed;inset:0;z-index:120;display:flex;justify-content:center;overflow-y:auto;background:rgba(43,39,34,.55);backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);padding:clamp(14px,4vw,52px) clamp(14px,4vw,40px);">
+      <div style="position:relative;width:100%;max-width:860px;background:linear-gradient(180deg,#faf5ec,#f3ead9);border-radius:20px;box-shadow:0 50px 90px -40px rgba(43,39,34,.8);overflow:hidden;height:fit-content;">
+        <!-- header -->
+        <div style="position:relative;padding:clamp(34px,5vw,56px) clamp(26px,5vw,56px) clamp(28px,4vw,40px);background:linear-gradient(180deg,#5e4c38,#4a3b2c);color:#fbf4e6;overflow:hidden;">
+          <span aria-hidden="true" style="position:absolute;top:-30%;right:-6%;width:320px;height:320px;border-radius:50%;background:radial-gradient(circle,rgba(202,160,102,.32),rgba(202,160,102,0) 65%);"></span>
+          <button onClick="{{ closeCase }}" aria-label="Close case study" style="position:absolute;top:20px;right:20px;width:42px;height:42px;border-radius:50%;background:rgba(250,245,236,.14);border:1px solid rgba(250,245,236,.3);color:#fbf4e6;font-size:17px;display:grid;place-items:center;backdrop-filter:blur(4px);">✕</button>
+          <span style="font-family:'DM Mono',monospace;font-size:11.5px;letter-spacing:.14em;color:#caa066;">{{ activeCase.tag }} · {{ activeCase.year }}</span>
+          <h2 style="margin:12px 0 6px;font-family:'Shippori Mincho',serif;font-size:clamp(28px,4.4vw,46px);font-weight:600;line-height:1.05;">{{ activeCase.client }}</h2>
+          <p style="margin:0;font-size:clamp(15px,1.8vw,19px);color:#e3d3b6;font-weight:300;max-width:46ch;line-height:1.5;">{{ activeCase.title }}</p>
+          <sc-if value="{{ activeCase.role }}" hint-placeholder-val="{{ true }}">
+            <span style="display:inline-block;margin-top:16px;font-size:12px;letter-spacing:.04em;color:#caa066;border:1px solid rgba(202,160,102,.4);border-radius:999px;padding:6px 14px;">{{ activeCase.role }}</span>
+          </sc-if>
+        </div>
+
+        <div style="padding:clamp(28px,5vw,52px) clamp(26px,5vw,56px) clamp(40px,6vw,60px);">
+          <p style="margin:0 0 clamp(28px,4vw,40px);font-family:'Shippori Mincho',serif;font-size:clamp(18px,2.4vw,24px);line-height:1.55;color:#3a342b;font-weight:500;">{{ activeCase.summary }}</p>
+
+          <!-- teaser variant -->
+          <sc-if value="{{ activeCase.teaser }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <sc-for list="{{ activeCase.lines }}" as="ln" hint-placeholder-count="3">
+                <div style="display:flex;align-items:center;gap:14px;padding:18px 20px;background:rgba(177,75,52,.06);border:1px solid rgba(177,75,52,.18);border-radius:12px;">
+                  <span aria-hidden="true" style="width:8px;height:8px;border-radius:50%;background:#b14b34;flex-shrink:0;"></span>
+                  <span style="font-size:15.5px;color:#3a342b;line-height:1.5;">{{ ln }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
+          <!-- full case variant -->
+          <sc-if value="{{ activeCase.full }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;flex-direction:column;gap:clamp(26px,4vw,38px);">
+              <!-- metrics -->
+              <div style="display:flex;flex-wrap:wrap;gap:clamp(16px,3vw,40px);padding:clamp(20px,3vw,28px);background:rgba(177,75,52,.05);border-radius:14px;border:1px solid rgba(177,75,52,.14);">
+                <sc-for list="{{ activeCase.metrics }}" as="m" hint-placeholder-count="3">
+                  <div style="display:flex;flex-direction:column;gap:5px;">
+                    <span style="font-family:'Shippori Mincho',serif;font-size:clamp(28px,3.6vw,40px);font-weight:700;color:#b14b34;line-height:1;">{{ m.v }}</span>
+                    <span style="font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:#9a8f7e;">{{ m.l }}</span>
+                  </div>
+                </sc-for>
+              </div>
+
+              <div data-block="" style="border-top:1px solid #e3d8c6;padding-top:24px;">
+                <h3 style="margin:0 0 10px;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#b14b34;">The problem</h3>
+                <p style="margin:0;font-size:15.5px;line-height:1.8;color:#4a4236;font-weight:300;">{{ activeCase.problem }}</p>
+              </div>
+
+              <div data-block="" style="border-top:1px solid #e3d8c6;padding-top:24px;display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,44px);" class="case-cols">
+                <div>
+                  <h3 style="margin:0 0 14px;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#b14b34;">Research</h3>
+                  <sc-for list="{{ activeCase.research }}" as="r" hint-placeholder-count="4">
+                    <div style="display:flex;gap:11px;margin-bottom:11px;"><span aria-hidden="true" style="color:#caa066;flex-shrink:0;"></span><span style="font-size:14.5px;line-height:1.55;color:#4a4236;font-weight:300;">{{ r }}</span></div>
+                  </sc-for>
+                </div>
+                <div>
+                  <h3 style="margin:0 0 14px;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#b14b34;">Process</h3>
+                  <sc-for list="{{ activeCase.process }}" as="pr" hint-placeholder-count="4">
+                    <div style="display:flex;gap:11px;margin-bottom:11px;"><span aria-hidden="true" style="color:#caa066;flex-shrink:0;"></span><span style="font-size:14.5px;line-height:1.55;color:#4a4236;font-weight:300;">{{ pr }}</span></div>
+                  </sc-for>
+                </div>
+              </div>
+
+              <div data-block="" style="border-top:1px solid #e3d8c6;padding-top:24px;">
+                <h3 style="margin:0 0 14px;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#b14b34;">Design decisions</h3>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;" class="case-cols">
+                  <sc-for list="{{ activeCase.decisions }}" as="d" hint-placeholder-count="4">
+                    <div style="display:flex;gap:11px;padding:14px 16px;background:rgba(255,255,255,.5);border:1px solid #e3d8c6;border-radius:10px;"><span aria-hidden="true" style="color:#b14b34;flex-shrink:0;">✦</span><span style="font-size:14px;line-height:1.5;color:#4a4236;font-weight:300;">{{ d }}</span></div>
+                  </sc-for>
+                </div>
+              </div>
+
+              <div data-block="" style="border-top:1px solid #e3d8c6;padding-top:24px;">
+                <h3 style="margin:0 0 14px;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#b14b34;">Outcome</h3>
+                <sc-for list="{{ activeCase.outcome }}" as="o" hint-placeholder-count="3">
+                  <div style="display:flex;gap:11px;margin-bottom:11px;"><span aria-hidden="true" style="color:#caa066;flex-shrink:0;">↗</span><span style="font-size:14.5px;line-height:1.55;color:#4a4236;font-weight:300;">{{ o }}</span></div>
+                </sc-for>
+              </div>
+
+              <div data-block="" style="border-top:1px solid #e3d8c6;padding-top:24px;background:linear-gradient(180deg,rgba(202,160,102,.08),rgba(202,160,102,0));margin:0 -16px;padding:24px 16px 0;border-radius:0 0 12px 12px;">
+                <h3 style="margin:0 0 10px;font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:#b14b34;">Key learnings</h3>
+                <p style="margin:0;font-family:'Shippori Mincho',serif;font-size:clamp(17px,2.2vw,21px);line-height:1.6;color:#3a342b;font-weight:500;font-style:italic;">{{ activeCase.learnings }}</p>
+              </div>
+            </div>
+          </sc-if>
+
+          <button onClick="{{ closeCase }}" style="margin-top:clamp(32px,5vw,44px);display:inline-flex;align-items:center;gap:10px;background:none;border:1px solid #d8cdbb;color:#4a4236;padding:13px 24px;border-radius:999px;font-size:13.5px;letter-spacing:.04em;transition:background .4s;" style-hover="background:rgba(177,75,52,.06);">← Back to the temple</button>
+        </div>
+      </div>
+    </div>
+  </sc-if>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
+class Component extends DCLogic {
+  state = {
+    navOpen: false,
+    activeId: 'hero',
+    activeCaseId: null,
+    sent: false,
+    form: { name: '', email: '', message: '' },
+  };
+
+  // ---------- lifecycle ----------
+  componentDidMount() {
+    document.documentElement.lang = 'en';
+    try {
+      if (!document.querySelector('main')) {
+        const first = document.getElementById('about');
+        if (first) {
+          const main = document.createElement('main');
+          first.parentNode.insertBefore(main, first);
+          ['about', 'work', 'process', 'contact'].forEach((id) => {
+            const s = document.getElementById(id);
+            if (s) main.appendChild(s);
+          });
+        }
+      }
+    } catch (e) {}
+    this.reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.mx = 0; this.my = 0; this.tmx = 0; this.tmy = 0;
+    this.syL = window.scrollY || 0;
+    this.root = document.getElementById('jr');
+    this._collect();
+    this._measure();
+    this._raf = requestAnimationFrame(this._loop);
+
+    this._onScroll = () => { if (!this._sQ) { this._sQ = true; requestAnimationFrame(this._updateActive); } };
+    this._onResize = () => this._measure();
+    this._onMove = (e) => {
+      if (this.reduced) return;
+      this.tmx = (e.clientX / window.innerWidth - 0.5) * 2;
+      this.tmy = (e.clientY / window.innerHeight - 0.5) * 2;
+    };
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+    window.addEventListener('resize', this._onResize);
+    window.addEventListener('mousemove', this._onMove);
+    window.addEventListener('keydown', this._onKey);
+
+    // reveal observer
+    this._io = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        if (en.isIntersecting) {
+          const el = en.target;
+          const d = parseInt(el.getAttribute('data-reveal-delay') || '0', 10);
+          el.style.transitionDelay = d + 'ms';
+          el.style.opacity = '1';
+          el.style.transform = 'none';
+          this._io.unobserve(el);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    this._initReveals();
+  }
+
+  componentDidUpdate() {
+    // catch newly mounted reveal targets (e.g. inside modal) harmless if none
+    this._initReveals();
+  }
+
+  componentWillUnmount() {
+    cancelAnimationFrame(this._raf);
+    window.removeEventListener('scroll', this._onScroll);
+    window.removeEventListener('resize', this._onResize);
+    window.removeEventListener('mousemove', this._onMove);
+    window.removeEventListener('keydown', this._onKey);
+    if (this._io) this._io.disconnect();
+  }
+
+  _onKey = (e) => {
+    if (e.key === 'Escape') {
+      if (this.state.activeCaseId) this.setState({ activeCaseId: null });
+      else if (this.state.navOpen) this.setState({ navOpen: false });
+    }
+  };
+
+  _initReveals() {
+    if (!this.root || !this._io) return;
+    this.root.querySelectorAll('[data-reveal]').forEach((el) => {
+      if (el.__rev) return;
+      el.__rev = true;
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(30px)';
+      el.style.transition = 'opacity .95s cubic-bezier(.16,.8,.24,1), transform .95s cubic-bezier(.16,.8,.24,1)';
+      this._io.observe(el);
+    });
+  }
+
+  _collect() {
+    if (!this.root) return;
+    this.pNodes = Array.from(this.root.querySelectorAll('[data-parallax]')).map((el) => ({
+      el,
+      speed: parseFloat(el.getAttribute('data-parallax')) || 0,
+      depth: parseFloat(el.getAttribute('data-mouse')) || 0,
+      anchor: el.getAttribute('data-anchor') || 'hero',
+      top: 0,
+    }));
+  }
+
+  _measure() {
+    this.anchors = {};
+    ['hero', 'about', 'work', 'process', 'contact'].forEach((id) => {
+      const s = document.getElementById(id);
+      this.anchors[id] = s ? s.offsetTop : 0;
+    });
+    if (this.pNodes) this.pNodes.forEach((n) => { n.top = this.anchors[n.anchor] || 0; });
+  }
+
+  _loop = () => {
+    const targetSy = window.scrollY || 0;
+    this.syL += (targetSy - this.syL) * (this.reduced ? 1 : 0.12);
+    this.mx += (this.tmx - this.mx) * 0.06;
+    this.my += (this.tmy - this.my) * 0.06;
+    if (this.pNodes) {
+      for (const n of this.pNodes) {
+        const dy = (this.syL - n.top) * n.speed;
+        const tx = this.reduced ? 0 : this.mx * n.depth;
+        const ty = this.reduced ? 0 : this.my * n.depth * 0.5;
+        n.el.style.transform = 'translate3d(' + tx.toFixed(2) + 'px,' + (dy + ty).toFixed(2) + 'px,0)';
+      }
+    }
+    this._raf = requestAnimationFrame(this._loop);
+  };
+
+  _updateActive = () => {
+    this._sQ = false;
+    const mid = (window.scrollY || 0) + window.innerHeight * 0.4;
+    const ids = ['hero', 'about', 'work', 'process', 'contact'];
+    let cur = 'hero';
+    for (const id of ids) { if ((this.anchors[id] || 0) <= mid) cur = id; }
+    if (cur !== this.state.activeId) this.setState({ activeId: cur });
+  };
+
+  // ---------- navigation ----------
+  _scrollTo(id) {
+    const s = document.getElementById(id);
+    if (s) window.scrollTo({ top: s.offsetTop - 4, behavior: this.reduced ? 'auto' : 'smooth' });
+  }
+  _go(id) { return (e) => { if (e) e.preventDefault(); this.setState({ navOpen: false }); this._scrollTo(id); }; }
+
+  // ---------- atmosphere ----------
+  _atmosphere() {
+    const R = React.createElement;
+    const rand = (a, b) => a + Math.random() * (b - a);
+    if (!this._cloudCfg) {
+      this._cloudCfg = Array.from({ length: 6 }, () => ({
+        top: rand(6, 46), w: rand(160, 360), h: rand(46, 92), op: rand(0.35, 0.75),
+        dur: rand(48, 92), delay: -rand(0, 60),
+      }));
+      this._moteCfg = Array.from({ length: 22 }, () => ({
+        left: rand(2, 96), bottom: rand(0, 60), size: rand(2, 5), op: rand(0.25, 0.6),
+        dur: rand(7, 15), delay: -rand(0, 14),
+      }));
+      this._birdCfg = Array.from({ length: 3 }, (_, i) => ({
+        top: rand(14, 34), scale: rand(0.7, 1.1), dur: rand(26, 40), delay: -rand(0, 30) + i * 9,
+      }));
+    }
+    const clouds = this._cloudCfg.map((c, i) => R('div', {
+      key: 'c' + i, 'aria-hidden': true, style: {
+        position: 'absolute', top: c.top + '%', left: 0, width: c.w + 'px', height: c.h + 'px',
+        borderRadius: '50%', background: 'radial-gradient(closest-side, rgba(255,253,247,.95), rgba(255,251,242,.55) 58%, rgba(255,251,242,0))',
+        filter: 'blur(7px)', opacity: c.op, animation: 'cloudMove ' + c.dur + 's linear ' + c.delay + 's infinite', willChange: 'transform',
+      },
+    }));
+    const motes = this._moteCfg.map((m, i) => R('div', {
+      key: 'm' + i, 'aria-hidden': true, style: {
+        position: 'absolute', left: m.left + '%', bottom: m.bottom + '%', width: m.size + 'px', height: m.size + 'px',
+        borderRadius: '50%', background: 'rgba(255,250,235,' + m.op + ')', boxShadow: '0 0 6px rgba(255,245,220,.6)',
+        animation: 'moteFloat ' + m.dur + 's ease-in-out ' + m.delay + 's infinite', willChange: 'transform,opacity',
+      },
+    }));
+    const birds = this._birdCfg.map((b, i) => R('svg', {
+      key: 'b' + i, 'aria-hidden': true, viewBox: '0 0 30 10', width: 30 * b.scale, height: 10 * b.scale,
+      style: { position: 'absolute', top: b.top + '%', left: 0, overflow: 'visible', animation: 'birdFly ' + b.dur + 's linear ' + b.delay + 's infinite', willChange: 'transform' },
+    }, R('path', { d: 'M1,8 Q8,1 15,7 Q22,1 29,8', fill: 'none', stroke: 'rgba(70,60,48,.5)', strokeWidth: 1.3, strokeLinecap: 'round' })));
+    return R(React.Fragment, null, clouds, motes, birds);
+  }
+
+  // ---------- data ----------
+  _data() {
+    const principles = ['Research-led decisions', 'Clarity in complexity', 'Systems that scale', 'Built with engineering'];
+    const stats = [{ v: '5+', l: 'years designing' }, { v: '+40%', l: 'efficiency gained' }, { v: '500+', l: 'stakeholders served' }];
+    const timeline = [
+      { year: '2016', title: 'Studied architecture', desc: 'B.Arch at the School of Architecture, AGI Jaipur where I learned to design for how people move through space.' },
+      { year: '2021', title: 'First product role', desc: 'UX/UI Designer at Warpspd B2B SaaS interfaces and internal tools, end to end with engineering.' },
+      { year: '2022', title: 'Dashboards & systems', desc: 'UX/UI Designer at Metafic owned the full lifecycle and lifted user satisfaction 35% through iteration.' },
+      { year: '2023', title: 'Leading enterprise UX', desc: 'UX Designer at Michelin +40% efficiency for 500+ stakeholders, on a Figma design system that cut design-to-dev time 30%.' },
+    ];
+    const processSteps = [
+      { n: '01', t: 'Discover', d: 'Interviews, field study and data until the real problem stops hiding behind the asked one.' },
+      { n: '02', t: 'Frame', d: 'Turn messy findings into one sharp question the whole team can rally around.' },
+      { n: '03', t: 'Explore', d: 'Diverge widely and cheaply sketches, flows and prototypes before commitment.' },
+      { n: '04', t: 'Decide', d: 'Test with real people, kill darlings, choose with evidence over opinion.' },
+      { n: '05', t: 'Ship', d: 'Partner closely with engineering so the built thing matches the believed thing.' },
+      { n: '06', t: 'Learn', d: 'Measure, listen, and feed what we learn back into the next climb.' },
+    ];
+    const methods = ['User inquiries', 'Usability testing', 'Journey mapping', 'Workshop facilitation', 'Design-thinking sessions', 'Stakeholder interviews'];
+    const frameworks = ['Jobs-to-be-Done', 'Design systems', 'Information architecture', 'Data visualisation', 'Atomic design', 'Double Diamond'];
+    const contactLinks = [
+      { label: 'Email', value: '3simranag@gmail.com', href: 'mailto:3simranag@gmail.com' },
+      { label: 'LinkedIn', value: 'in/simran-agarwal', href: 'https://linkedin.com/in/simran-agarwal-1b8833184' },
+      { label: 'Instagram', value: '@I_Just_Design', href: 'https://instagram.com/I_Just_Design' },
+    ];
+    const cases = [
+      {
+        id: 'michelin', client: 'Michelin', title: 'Enterprise analytics, made legible', tag: 'Enterprise · B2B SaaS', year: '2023–26', role: 'UX Designer',
+        summary: 'Leading UX for enterprise analytics platforms turning dense inventory and logistics data into dashboards 500+ stakeholders actually trust.',
+        problem: 'Inventory and logistics teams were buried in fragmented data spread across disconnected tools. Decisions stalled while people hunted for the right number, and onboarding new sellers meant learning a maze.',
+        research: ['User inquiries with inventory & logistics stakeholders', 'Usability testing across the analytics workflows', 'Design-thinking workshops to map the digital journeys', 'Audited fragmented internal tools and process pain points'],
+        process: ['Mapped end-to-end workflows and the moments of friction', 'Designed information architecture for complex datasets', 'Built data-rich dashboards with deliberate visual hierarchy', 'Created flows, wireframes & prototypes in Figma with engineering'],
+        decisions: ['Applied JTBD to streamline seller onboarding & management', 'Built reusable design-system components in Figma', 'Led with hierarchy so business users could read the data', 'Aligned design decisions with technical constraints, early'],
+        outcome: ['+40% efficiency for 500+ stakeholders', '−30% design-to-development time via the system', 'Data-rich dashboards adopted across inventory & logistics'],
+        learnings: 'Complexity is rarely the data it is the path to it. Most of the work was clearing that path, so the right number reaches the right person at the right moment.',
+        metrics: [{ v: '+40%', l: 'efficiency' }, { v: '500+', l: 'stakeholders' }, { v: '−30%', l: 'design→dev' }],
+      },
+      {
+        id: 'metafic', client: 'Metafic', title: 'Dashboards that explain themselves', tag: 'B2B SaaS · Enterprise', year: '2022–23', role: 'UX/UI Designer',
+        summary: 'Designing B2B SaaS interfaces and internal workflow tools end to end from discovery to delivery for enterprise clients.',
+        problem: 'Enterprise clients had to interpret complex datasets without a data analyst on hand. The existing tools made them guess, and trust eroded with every wrong read.',
+        research: ['Discovery sessions with enterprise client teams', 'Iterative usability testing rounds', 'Stakeholder interviews on real workflow pain points', 'Review of existing information architecture & hierarchy'],
+        process: ['Owned the full design lifecycle, discovery → delivery', 'Built extensible dashboard designs on solid IA', 'Refined through repeated usability testing', 'Communicated design decisions to technical stakeholders'],
+        decisions: ['Advanced information architecture for dense data', 'Visual hierarchy tuned for fast business interpretation', 'Extensible patterns so the product could keep growing', 'A tight engineering partnership to protect the vision'],
+        outcome: ['+35% user satisfaction through iteration', 'Reusable dashboard patterns shipped', 'Clearer alignment between design & engineering'],
+        learnings: 'When a dashboard has to explain itself, hierarchy is the interface. The chart matters less than the order in which you meet it.',
+        metrics: [{ v: '+35%', l: 'satisfaction' }, { v: 'E2E', l: 'lifecycle' }, { v: 'B2B', l: 'SaaS' }],
+      },
+      {
+        id: 'warpspd', client: 'Warpspd', title: 'First principles, first product', tag: 'B2B SaaS · Internal tools', year: '2021–22', role: 'UX/UI Designer',
+        summary: 'My first product role designing B2B SaaS interfaces and internal workflow tools from the ground up, learning the craft end to end alongside engineering.',
+        problem: 'A young product needed its core workflows and internal tools designed fast without trading away usability while everything was still finding its shape.',
+        research: ['Mapped core user workflows from scratch', 'Early usability checks with internal users', 'Worked directly with engineering on real constraints'],
+        process: ['Translated requirements into clear flows & wireframes', 'Prototyped in Figma for quick validation', 'Iterated tightly within a small cross-functional team'],
+        decisions: ['Kept the IA simple while the product found itself', 'Designed for implementation, not just for show', 'Reused patterns to keep the team moving quickly'],
+        outcome: ['Shipped core B2B SaaS interfaces & internal tools', 'Built the habits research, systems, partnership', 'Laid the foundation for everything that followed'],
+        learnings: 'Your first product teaches you that taste without shipping is just opinion. I learned to design things that survive contact with engineering.',
+        metrics: [{ v: '1st', l: 'product role' }, { v: 'B2B', l: 'SaaS & tools' }, { v: 'E2E', l: 'craft' }],
+      },
+      {
+        id: 'arch', client: 'Architecture → UX', title: 'How a building taught me to design software', tag: 'Origin story', year: '2016–21', role: 'B.Arch, AGI Jaipur',
+        summary: 'Before screens, I designed space. Five years of architecture school still shapes how I structure every product.',
+        teaser: true,
+        lines: ['Structure first information architecture is just a floor plan', 'Light and hierarchy guide the eye, on a façade or a dashboard', 'People move through products the way they move through buildings'],
+      },
+    ];
+    return { principles, stats, timeline, processSteps, methods, frameworks, contactLinks, cases };
+  }
+
+  // ---------- render ----------
+  renderVals() {
+    const d = this._data();
+    const active = this.state.activeId;
+
+    const navItems = [
+      { label: 'Work', id: 'work' }, { label: 'About', id: 'about' },
+      { label: 'Process', id: 'process' }, { label: 'Contact', id: 'contact' },
+    ];
+    const navLinks = navItems.map((n) => ({
+      label: n.label, href: '#' + n.id,
+      onClick: this._go(n.id), onClickClose: this._go(n.id),
+    }));
+
+    const peakDefs = [
+      { id: 'hero', label: 'Begin', aria: 'Go to the start' },
+      { id: 'about', label: 'Who I Am', aria: 'Go to Who I Am' },
+      { id: 'work', label: 'What I Create', aria: 'Go to What I Create' },
+      { id: 'process', label: 'How I Think', aria: 'Go to How I Think' },
+      { id: 'contact', label: "Let's Build", aria: 'Go to Contact' },
+    ];
+    const peaks = peakDefs.map((p) => {
+      const on = p.id === active;
+      return {
+        label: p.label, aria: p.aria, onClick: this._go(p.id),
+        dotStyle: 'width:' + (on ? '11px' : '8px') + ';height:' + (on ? '11px' : '8px') + ';border-radius:50%;flex-shrink:0;transition:all .4s;background:' + (on ? '#b14b34' : 'rgba(110,96,82,.4)') + ';box-shadow:' + (on ? '0 0 0 4px rgba(177,75,52,.16)' : 'none') + ';',
+        labelStyle: 'font-size:11px;letter-spacing:.04em;white-space:nowrap;transition:all .4s;color:#6b6052;opacity:' + (on ? '1' : '0') + ';transform:translateX(' + (on ? '0' : '6px') + ');font-family:Shippori Mincho,serif;',
+      };
+    });
+
+    const cases = d.cases.map((c, i) => ({
+      ...c,
+      full: !c.teaser,
+      delay: i * 90,
+      aria: 'Open case study: ' + c.client + ' ' + c.title,
+      open: () => this.setState({ activeCaseId: c.id }),
+    }));
+    const activeCase = this.state.activeCaseId ? cases.find((c) => c.id === this.state.activeCaseId) : null;
+
+    return {
+      navLinks,
+      navOpen: this.state.navOpen,
+      toggleNav: () => this.setState((s) => ({ navOpen: !s.navOpen })),
+      closeNav: () => this.setState({ navOpen: false }),
+      goContact: this._go('contact'),
+      goWork: this._go('work'),
+      beginJourney: this._go('about'),
+      toTop: this._go('hero'),
+      atmosphere: this._atmosphere(),
+      peaks,
+      principles: d.principles,
+      stats: d.stats,
+      timeline: d.timeline,
+      processSteps: d.processSteps.map((p, i) => ({ ...p, delay: i * 70 })),
+      methods: d.methods,
+      frameworks: d.frameworks,
+      contactLinks: d.contactLinks,
+      cases,
+      activeCase,
+      closeCase: () => this.setState({ activeCaseId: null }),
+      // form
+      form: this.state.form,
+      sent: this.state.sent,
+      notSent: !this.state.sent,
+      setName: (e) => this.setState((s) => ({ form: { ...s.form, name: e.target.value } })),
+      setEmail: (e) => this.setState((s) => ({ form: { ...s.form, email: e.target.value } })),
+      setMessage: (e) => this.setState((s) => ({ form: { ...s.form, message: e.target.value } })),
+      submitForm: (e) => { e.preventDefault(); this.setState({ sent: true }); },
+      downloadResume: () => { window.location.href = 'Resume.dc.html'; },
+      year: 2026,
+    };
+  }
+}
+</script>
+</body>
+</html>

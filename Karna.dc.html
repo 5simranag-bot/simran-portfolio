@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700;800&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:#15100c;color:#ece0c8;font-family:'Zen Kaku Gothic New',system-ui,sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:clip;}
+  ::selection{background:#caa066;color:#15100c;}
+  a{color:inherit;text-decoration:none;}
+  button{font-family:inherit;cursor:pointer;}
+  :focus-visible{outline:2px solid #caa066;outline-offset:3px;border-radius:2px;}
+  @keyframes kmote{0%{transform:translate3d(0,0,0);opacity:0}14%{opacity:.7}86%{opacity:.4}100%{transform:translate3d(16px,-150px,0);opacity:0}}
+  @keyframes kglow{0%,100%{opacity:.85;transform:scale(1)}50%{opacity:1;transform:scale(1.05)}}
+  @keyframes kbob{0%,100%{transform:translateY(0)}50%{transform:translateY(9px)}}
+  @keyframes ksymbol{0%{transform:translateY(0) rotate(0);opacity:0}12%{opacity:.5}88%{opacity:.3}100%{transform:translateY(-120px) rotate(8deg);opacity:0}}
+  @keyframes kfloatY{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+  @media (prefers-reduced-motion: reduce){*{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}}
+  @media (max-width:860px){
+    .k-jump{display:none!important;}
+    .k-split{grid-template-columns:1fr!important;}
+    .k-discovery{grid-template-columns:1fr 1fr!important;}
+    .k-tools{grid-template-columns:1fr 1fr!important;}
+    .k-impact{grid-template-columns:1fr 1fr!important;}
+    .k-path{grid-template-columns:1fr 1fr 1fr!important;}
+  }
+  @media (max-width:560px){
+    .k-discovery{grid-template-columns:1fr!important;}
+    .k-tools{grid-template-columns:1fr!important;}
+    .k-impact{grid-template-columns:1fr!important;}
+    .k-path{grid-template-columns:1fr 1fr!important;}
+    .k-craft-row{flex-direction:column!important;text-align:center!important;}
+    .k-craft-row [data-phone]{margin:0 auto!important;}
+  }
+</style>
+</helmet>
+
+<div id="karna" style="position:relative;width:100%;background:#15100c;">
+
+  <!-- ============ STICKY NAV + PROGRESS ============ -->
+  <header style="position:fixed;top:0;left:0;right:0;z-index:90;background:linear-gradient(180deg,rgba(21,16,12,.94),rgba(21,16,12,.72));backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(202,160,102,.16);">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:18px;padding:14px clamp(18px,4vw,42px);">
+      <a href="Simran%20Agarwal%20-%20Portfolio.dc.html#work" style="display:inline-flex;align-items:center;gap:9px;font-size:12.5px;letter-spacing:.04em;color:#caa066;transition:color .3s;" style-hover="color:#f3e8d3;">
+        <span aria-hidden="true">←</span><span class="k-jump">Back to the journey</span>
+      </a>
+      <div style="display:flex;align-items:center;gap:11px;">
+        <span aria-hidden="true" style="font-family:'Shippori Mincho',serif;font-size:17px;color:#caa066;">⛩</span>
+        <span style="font-family:'Shippori Mincho',serif;font-size:16px;font-weight:600;letter-spacing:.14em;color:#f3e8d3;">KINDA SHOPEE</span>
+      </div>
+      <nav class="k-jump" aria-label="Sections" style="display:flex;align-items:center;gap:4px;">
+        <sc-for list="{{ sections }}" as="s" hint-placeholder-count="7">
+          <a href="{{ s.href }}" onClick="{{ s.onClick }}" style="{{ s.pillStyle }}" style-hover="filter:brightness(1.12);">{{ s.label }}</a>
+        </sc-for>
+      </nav>
+    </div>
+    <div style="height:2px;width:100%;background:rgba(202,160,102,.12);">
+      <div style="height:100%;width:{{ progressPct }};background:linear-gradient(90deg,#b14b34,#caa066);transition:width .1s linear;"></div>
+    </div>
+  </header>
+
+  <!-- ============ HERO ============ -->
+  <section id="k-hero" data-screen-label="KINDA SHOPEE Hero" style="position:relative;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px clamp(20px,5vw,40px) 80px;overflow:hidden;background:radial-gradient(ellipse 80% 60% at 50% 36%,#241914 0%,#1a130d 46%,#120d09 100%);">
+    <div style="position:absolute;inset:0;pointer-events:none;">{{ particles }}</div>
+    <!-- glowing scroll -->
+    <div style="position:relative;margin-bottom:42px;animation:kfloatY 7s ease-in-out infinite;">
+      <div aria-hidden="true" style="position:absolute;inset:-60px;border-radius:50%;background:radial-gradient(circle,rgba(202,160,102,.34),rgba(202,160,102,0) 68%);animation:kglow 6s ease-in-out infinite;"></div>
+      <div style="position:relative;width:clamp(132px,18vw,186px);height:clamp(150px,20vw,210px);border-radius:12px;background:linear-gradient(160deg,#efe2c6,#dcc8a0);box-shadow:0 30px 60px -24px rgba(0,0,0,.7),inset 0 2px 0 rgba(255,255,255,.5);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;overflow:hidden;">
+        <div aria-hidden="true" style="position:absolute;top:0;left:0;right:0;height:14px;background:linear-gradient(180deg,#caa066,#b8915a);"></div>
+        <div aria-hidden="true" style="position:absolute;bottom:0;left:0;right:0;height:14px;background:linear-gradient(0deg,#caa066,#b8915a);"></div>
+        <span style="font-family:'Shippori Mincho',serif;font-size:46px;line-height:1;color:#15100c;">道</span>
+        <span style="font-family:'DM Mono',monospace;font-size:9.5px;letter-spacing:.28em;text-transform:uppercase;color:#6e5536;">unfold</span>
+      </div>
+    </div>
+    <span data-reveal style="font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.4em;text-transform:uppercase;color:#caa066;margin-bottom:18px;">Case Study · E-commerce</span>
+    <h1 data-reveal data-reveal-delay="100" style="margin:0;font-family:'Shippori Mincho',serif;font-weight:700;font-size:clamp(40px,10vw,116px);line-height:.92;letter-spacing:.02em;color:#f5ead4;text-shadow:0 4px 40px rgba(202,160,102,.3);">KINDA SHOPEE</h1>
+    <p data-reveal data-reveal-delay="200" style="margin:22px 0 0;font-family:'Shippori Mincho',serif;font-size:clamp(16px,2.2vw,24px);line-height:1.5;color:#cdb893;font-weight:400;font-style:italic;max-width:30ch;">A journey toward thoughtful commerce.</p>
+    <div data-reveal data-reveal-delay="320" style="display:flex;flex-wrap:wrap;justify-content:center;gap:10px 26px;margin-top:34px;font-family:'DM Mono',monospace;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:#9a8157;">
+      <span>Role UX/UI Designer</span><span aria-hidden="true" style="color:#caa066;">·</span>
+      <span>Mobile · iOS</span><span aria-hidden="true" style="color:#caa066;">·</span>
+      <span>Research → Final Design</span>
+    </div>
+    <div aria-hidden="true" style="position:absolute;bottom:26px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;animation:kbob 2.6s ease-in-out infinite;">
+      <span style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:#7a6444;">begin</span>
+      <span style="width:1px;height:34px;background:linear-gradient(#caa066,rgba(202,160,102,0));"></span>
+    </div>
+  </section>
+
+  <!-- ============ TL;DR STRIP (recruiter 30s) ============ -->
+  <section style="position:relative;z-index:2;background:#1d1610;border-top:1px solid rgba(202,160,102,.16);border-bottom:1px solid rgba(202,160,102,.16);padding:clamp(28px,4vw,40px) clamp(20px,5vw,42px);">
+    <div style="max-width:1140px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(16px,3vw,40px);" class="k-impact">
+      <sc-for list="{{ tldr }}" as="t" hint-placeholder-count="4">
+        <div data-reveal style="display:flex;flex-direction:column;gap:7px;">
+          <span style="font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:#caa066;">{{ t.k }}</span>
+          <span style="font-size:14px;line-height:1.5;color:#d8c8a8;font-weight:300;">{{ t.v }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- ============ S1 THE CALL TO ADVENTURE ============ -->
+  <section id="k-story" data-screen-label="KINDA SHOPEE The Call" style="position:relative;padding:clamp(90px,12vw,150px) clamp(20px,5vw,42px);overflow:hidden;background:radial-gradient(ellipse 70% 50% at 80% 10%,#241813,#15100c 60%);">
+    <div style="max-width:1000px;margin:0 auto;">
+      <div data-reveal style="display:flex;align-items:center;gap:14px;margin-bottom:22px;">
+        <span style="font-family:'Shippori Mincho',serif;font-size:13px;letter-spacing:.3em;color:#caa066;">壱 Chapter One</span>
+        <span style="flex:1;height:1px;background:rgba(202,160,102,.24);max-width:160px;"></span>
+      </div>
+      <h2 data-reveal data-reveal-delay="80" style="margin:0 0 18px;font-family:'Shippori Mincho',serif;font-weight:600;font-size:clamp(32px,5.4vw,62px);line-height:1.04;color:#f3e8d3;">The Call to Adventure</h2>
+      <p data-reveal data-reveal-delay="140" style="margin:0 0 clamp(34px,5vw,52px);font-size:16px;line-height:1.85;color:#b6a47f;font-weight:300;max-width:52ch;">Every journey begins with a disturbance in the ordinary world. For the modern shopper, that world had grown loud.</p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:clamp(40px,6vw,60px);" class="k-discovery">
+        <sc-for list="{{ callPoints }}" as="c" hint-placeholder-count="4">
+          <div data-reveal data-reveal-delay="{{ c.delay }}" style="position:relative;padding:24px 26px;background:rgba(236,224,200,.04);border:1px solid rgba(202,160,102,.18);border-radius:14px;overflow:hidden;">
+            <span aria-hidden="true" style="position:absolute;top:14px;right:18px;font-family:'Shippori Mincho',serif;font-size:30px;color:rgba(202,160,102,.22);">{{ c.kanji }}</span>
+            <h3 style="margin:0 0 7px;font-family:'Shippori Mincho',serif;font-size:19px;font-weight:600;color:#ecdcbb;">{{ c.t }}</h3>
+            <p style="margin:0;font-size:14px;line-height:1.65;color:#a8966f;font-weight:300;max-width:34ch;">{{ c.d }}</p>
+          </div>
+        </sc-for>
+      </div>
+
+      <!-- HMW question on parchment -->
+      <div data-reveal style="position:relative;padding:clamp(34px,5vw,56px);background:linear-gradient(160deg,#ece0c8,#ddccab);border-radius:18px;box-shadow:0 30px 60px -34px rgba(0,0,0,.7);overflow:hidden;">
+        <span aria-hidden="true" style="position:absolute;top:-30px;right:-20px;font-family:'Shippori Mincho',serif;font-size:160px;line-height:1;color:rgba(110,85,54,.08);">問</span>
+        <span style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:#9a6b3f;">The question</span>
+        <p style="margin:14px 0 0;font-family:'Shippori Mincho',serif;font-size:clamp(22px,3.4vw,38px);line-height:1.35;color:#2c2114;font-weight:600;max-width:24ch;">How might we create a calmer, more intentional way to shop one built on trust instead of noise?</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ S2 THE DISCOVERY ============ -->
+  <section id="k-discovery" data-screen-label="KINDA SHOPEE The Discovery" style="position:relative;padding:clamp(90px,12vw,150px) clamp(20px,5vw,42px);background:#15100c;">
+    <div style="max-width:1140px;margin:0 auto;">
+      <div data-reveal style="display:flex;align-items:center;gap:14px;margin-bottom:22px;">
+        <span style="font-family:'Shippori Mincho',serif;font-size:13px;letter-spacing:.3em;color:#caa066;">弐 Chapter Two</span>
+        <span style="flex:1;height:1px;background:rgba(202,160,102,.24);max-width:160px;"></span>
+      </div>
+      <h2 data-reveal data-reveal-delay="80" style="margin:0 0 16px;font-family:'Shippori Mincho',serif;font-weight:600;font-size:clamp(32px,5.4vw,62px);line-height:1.04;color:#f3e8d3;">The Discovery</h2>
+      <p data-reveal data-reveal-delay="140" style="margin:0 0 clamp(40px,6vw,60px);font-size:16px;line-height:1.85;color:#b6a47f;font-weight:300;max-width:50ch;">I gathered fragments of an old map what people said, where they stumbled, what the market missed. Pinned together, they pointed the way.</p>
+
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;" class="k-discovery">
+        <sc-for list="{{ discovery }}" as="d" hint-placeholder-count="4">
+          <div data-reveal data-reveal-delay="{{ d.delay }}" style="position:relative;display:flex;flex-direction:column;padding:26px 22px;background:linear-gradient(165deg,#efe3ca,#dccbaa);border-radius:4px 14px 4px 14px;box-shadow:0 22px 44px -28px rgba(0,0,0,.7);transform:rotate({{ d.tilt }});transition:transform .5s cubic-bezier(.16,.8,.24,1);" style-hover="transform:rotate(0) translateY(-6px);">
+            <span aria-hidden="true" style="position:absolute;top:-7px;left:50%;transform:translateX(-50%);width:14px;height:14px;border-radius:50%;background:#b14b34;box-shadow:0 2px 6px rgba(0,0,0,.4);"></span>
+            <span style="font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:#9a6b3f;">{{ d.tag }}</span>
+            <h3 style="margin:9px 0 8px;font-family:'Shippori Mincho',serif;font-size:18px;font-weight:600;color:#2c2114;line-height:1.2;">{{ d.t }}</h3>
+            <p style="margin:0 0 14px;font-size:13px;line-height:1.6;color:#5e4c33;font-weight:400;">{{ d.d }}</p>
+            <span style="margin-top:auto;font-family:'Shippori Mincho',serif;font-size:13.5px;font-style:italic;color:#9a4b2f;line-height:1.4;">“{{ d.insight }}”</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ S3 THE PATH ============ -->
+  <section id="k-path" data-screen-label="KINDA SHOPEE The Path" style="position:relative;padding:clamp(90px,12vw,150px) clamp(20px,5vw,42px);overflow:hidden;background:radial-gradient(ellipse 60% 50% at 20% 30%,#221712,#15100c 62%);">
+    <div style="max-width:1140px;margin:0 auto;">
+      <div data-reveal style="display:flex;align-items:center;gap:14px;margin-bottom:22px;">
+        <span style="font-family:'Shippori Mincho',serif;font-size:13px;letter-spacing:.3em;color:#caa066;">参 Chapter Three</span>
+        <span style="flex:1;height:1px;background:rgba(202,160,102,.24);max-width:160px;"></span>
+      </div>
+      <h2 data-reveal data-reveal-delay="80" style="margin:0 0 16px;font-family:'Shippori Mincho',serif;font-weight:600;font-size:clamp(32px,5.4vw,62px);line-height:1.04;color:#f3e8d3;">The Path</h2>
+      <p data-reveal data-reveal-delay="140" style="margin:0 0 clamp(44px,6vw,68px);font-size:16px;line-height:1.85;color:#b6a47f;font-weight:300;max-width:50ch;">The trail wound up the mountain in six switchbacks each one earning the next.</p>
+
+      <div style="position:relative;">
+        <div aria-hidden="true" class="k-pathline" style="position:absolute;top:38px;left:7%;right:7%;height:2px;background:repeating-linear-gradient(90deg,rgba(202,160,102,.5) 0 9px,transparent 9px 18px);"></div>
+        <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:14px;" class="k-path">
+          <sc-for list="{{ path }}" as="p" hint-placeholder-count="6">
+            <div data-reveal data-reveal-delay="{{ p.delay }}" style="position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;">
+              <div style="position:relative;width:76px;height:76px;border-radius:50%;background:#1d1610;border:2px solid #caa066;display:grid;place-items:center;font-family:'Shippori Mincho',serif;font-size:26px;color:#caa066;box-shadow:0 0 0 6px rgba(21,16,12,1),0 14px 30px -16px rgba(0,0,0,.8);margin-bottom:18px;">{{ p.icon }}</div>
+              <span style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.14em;color:#8a7350;">{{ p.n }}</span>
+              <h3 style="margin:4px 0 6px;font-family:'Shippori Mincho',serif;font-size:16.5px;font-weight:600;color:#ecdcbb;">{{ p.t }}</h3>
+              <p style="margin:0;font-size:12.5px;line-height:1.55;color:#a0906c;font-weight:300;">{{ p.d }}</p>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ S4 TOOLS OF THE TRAVELER ============ -->
+  <section id="k-tools" data-screen-label="KINDA SHOPEE The Tools" style="position:relative;padding:clamp(90px,12vw,150px) clamp(20px,5vw,42px);background:#15100c;">
+    <div style="max-width:1140px;margin:0 auto;">
+      <div data-reveal style="display:flex;align-items:center;gap:14px;margin-bottom:22px;">
+        <span style="font-family:'Shippori Mincho',serif;font-size:13px;letter-spacing:.3em;color:#caa066;">肆 Chapter Four</span>
+        <span style="flex:1;height:1px;background:rgba(202,160,102,.24);max-width:160px;"></span>
+      </div>
+      <h2 data-reveal data-reveal-delay="80" style="margin:0 0 16px;font-family:'Shippori Mincho',serif;font-weight:600;font-size:clamp(32px,5.4vw,62px);line-height:1.04;color:#f3e8d3;">The Tools of the Traveler</h2>
+      <p data-reveal data-reveal-delay="140" style="margin:0 0 clamp(40px,6vw,60px);font-size:16px;line-height:1.85;color:#b6a47f;font-weight:300;max-width:50ch;">Artifacts collected along the way each one a tool that kept the work honest.</p>
+
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;" class="k-tools">
+        <sc-for list="{{ tools }}" as="t" hint-placeholder-count="4">
+          <div data-reveal data-reveal-delay="{{ t.delay }}" style="position:relative;display:flex;flex-direction:column;padding:28px 24px;background:rgba(236,224,200,.04);border:1px solid rgba(202,160,102,.2);border-radius:14px;transition:border-color .4s,background .4s;" style-hover="border-color:rgba(202,160,102,.5);background:rgba(236,224,200,.07);">
+            <span aria-hidden="true" style="display:grid;place-items:center;width:48px;height:48px;border-radius:10px;background:rgba(202,160,102,.14);font-family:'Shippori Mincho',serif;font-size:24px;color:#caa066;margin-bottom:18px;">{{ t.icon }}</span>
+            <h3 style="margin:0 0 8px;font-family:'Shippori Mincho',serif;font-size:19px;font-weight:600;color:#ecdcbb;">{{ t.t }}</h3>
+            <p style="margin:0;font-size:13.5px;line-height:1.65;color:#a8966f;font-weight:300;">{{ t.d }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ S5 THE CRAFT ============ -->
+  <section id="k-craft" data-screen-label="KINDA SHOPEE The Craft" style="position:relative;padding:clamp(90px,12vw,150px) clamp(20px,5vw,42px);overflow:hidden;background:radial-gradient(ellipse 80% 40% at 50% 0%,#1f1611,#15100c 60%);">
+    <div style="max-width:1180px;margin:0 auto;">
+      <div data-reveal style="display:flex;align-items:center;gap:14px;margin-bottom:22px;">
+        <span style="font-family:'Shippori Mincho',serif;font-size:13px;letter-spacing:.3em;color:#caa066;">伍 Chapter Five</span>
+        <span style="flex:1;height:1px;background:rgba(202,160,102,.24);max-width:160px;"></span>
+      </div>
+      <h2 data-reveal data-reveal-delay="80" style="margin:0 0 16px;font-family:'Shippori Mincho',serif;font-weight:600;font-size:clamp(32px,5.4vw,62px);line-height:1.04;color:#f3e8d3;">The Craft</h2>
+      <p data-reveal data-reveal-delay="140" style="margin:0 0 clamp(54px,8vw,86px);font-size:16px;line-height:1.85;color:#b6a47f;font-weight:300;max-width:54ch;">Where the journey becomes the product. Each screen earns its place here's why it exists, the problem it solves, and the goal it serves.</p>
+
+      <div style="display:flex;flex-direction:column;gap:clamp(64px,9vw,120px);">
+        <sc-for list="{{ craft }}" as="c" hint-placeholder-count="7">
+          <div class="k-craft-row" style="display:flex;align-items:center;gap:clamp(34px,6vw,80px);flex-direction:{{ c.dir }};">
+            <!-- phone -->
+            <div data-phone data-reveal style="flex-shrink:0;position:relative;width:clamp(216px,26vw,264px);">
+              <div aria-hidden="true" style="position:absolute;inset:-12% -8% -8%;border-radius:50%;background:radial-gradient(circle,rgba(202,160,102,.18),rgba(202,160,102,0) 70%);"></div>
+              <div style="position:relative;padding:9px;background:linear-gradient(160deg,#2a2018,#14100b 100%);border-radius:38px;box-shadow:0 40px 70px -30px rgba(0,0,0,.85),inset 0 0 0 1px rgba(202,160,102,.22);">
+                <div style="position:relative;border-radius:30px;overflow:hidden;background:#000;aspect-ratio:375/812;">
+                  <span aria-hidden="true" style="position:absolute;top:8px;left:50%;transform:translateX(-50%);width:42%;height:18px;background:#0a0a0a;border-radius:0 0 14px 14px;z-index:2;"></span>
+                  <img src="{{ c.img }}" alt="{{ c.alt }}" style="display:block;width:100%;height:100%;object-fit:cover;"/>
+                </div>
+              </div>
+            </div>
+            <!-- rationale -->
+            <div data-reveal data-reveal-delay="120" style="flex:1;min-width:0;">
+              <span style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#caa066;">{{ c.step }}</span>
+              <h3 style="margin:10px 0 8px;font-family:'Shippori Mincho',serif;font-size:clamp(24px,3.2vw,34px);font-weight:600;color:#f3e8d3;line-height:1.1;">{{ c.t }}</h3>
+              <p style="margin:0 0 24px;font-size:15.5px;line-height:1.75;color:#bfae88;font-weight:300;max-width:42ch;">{{ c.lead }}</p>
+              <div style="display:flex;flex-direction:column;gap:14px;max-width:46ch;">
+                <div style="display:flex;gap:13px;">
+                  <span style="flex-shrink:0;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#caa066;width:64px;padding-top:2px;">Why</span>
+                  <span style="font-size:14px;line-height:1.6;color:#d3c3a0;font-weight:300;">{{ c.why }}</span>
+                </div>
+                <div style="display:flex;gap:13px;border-top:1px solid rgba(202,160,102,.14);padding-top:14px;">
+                  <span style="flex-shrink:0;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#caa066;width:64px;padding-top:2px;">Solves</span>
+                  <span style="font-size:14px;line-height:1.6;color:#d3c3a0;font-weight:300;">{{ c.solves }}</span>
+                </div>
+                <div style="display:flex;gap:13px;border-top:1px solid rgba(202,160,102,.14);padding-top:14px;">
+                  <span style="flex-shrink:0;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:#caa066;width:64px;padding-top:2px;">Business</span>
+                  <span style="font-size:14px;line-height:1.6;color:#d3c3a0;font-weight:300;">{{ c.business }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ S6 THE LESSONS ============ -->
+  <section id="k-lessons" data-screen-label="KINDA SHOPEE Lessons" style="position:relative;padding:clamp(90px,12vw,150px) clamp(20px,5vw,42px);background:#15100c;">
+    <div style="max-width:1000px;margin:0 auto;">
+      <div data-reveal style="display:flex;align-items:center;gap:14px;margin-bottom:22px;">
+        <span style="font-family:'Shippori Mincho',serif;font-size:13px;letter-spacing:.3em;color:#caa066;">陸 Chapter Six</span>
+        <span style="flex:1;height:1px;background:rgba(202,160,102,.24);max-width:160px;"></span>
+      </div>
+      <h2 data-reveal data-reveal-delay="80" style="margin:0 0 clamp(34px,5vw,52px);font-family:'Shippori Mincho',serif;font-weight:600;font-size:clamp(32px,5.4vw,62px);line-height:1.04;color:#f3e8d3;">What the Mountain Taught Me</h2>
+      <div style="display:flex;flex-direction:column;gap:2px;">
+        <sc-for list="{{ lessons }}" as="l" hint-placeholder-count="4">
+          <div data-reveal data-reveal-delay="{{ l.delay }}" style="display:flex;gap:clamp(18px,3vw,34px);align-items:baseline;padding:clamp(22px,3vw,30px) 0;border-bottom:1px solid rgba(202,160,102,.16);">
+            <span style="flex-shrink:0;font-family:'Shippori Mincho',serif;font-size:clamp(24px,3vw,34px);color:rgba(202,160,102,.5);line-height:1;">{{ l.n }}</span>
+            <div>
+              <h3 style="margin:0 0 7px;font-family:'Shippori Mincho',serif;font-size:clamp(19px,2.5vw,26px);font-weight:600;color:#ecdcbb;line-height:1.25;">{{ l.t }}</h3>
+              <p style="margin:0;font-size:15px;line-height:1.75;color:#a8966f;font-weight:300;max-width:60ch;">{{ l.d }}</p>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ S7 THE IMPACT ============ -->
+  <section id="k-impact" data-screen-label="KINDA SHOPEE Impact" style="position:relative;padding:clamp(90px,12vw,160px) clamp(20px,5vw,42px) clamp(70px,9vw,110px);overflow:hidden;background:radial-gradient(ellipse 80% 70% at 50% 100%,#2a1d12,#1a130d 56%,#15100c 100%);">
+    <div style="max-width:1140px;margin:0 auto;text-align:center;">
+      <div data-reveal style="display:inline-flex;align-items:center;gap:14px;margin-bottom:22px;">
+        <span style="font-family:'Shippori Mincho',serif;font-size:13px;letter-spacing:.3em;color:#caa066;">漆 The Summit</span>
+      </div>
+      <h2 data-reveal data-reveal-delay="80" style="margin:0 0 16px;font-family:'Shippori Mincho',serif;font-weight:600;font-size:clamp(32px,5.4vw,62px);line-height:1.04;color:#f3e8d3;">What I Made</h2>
+      <p data-reveal data-reveal-delay="140" style="margin:0 auto clamp(48px,7vw,72px);font-size:16px;line-height:1.85;color:#b6a47f;font-weight:300;max-width:48ch;">A self-initiated concept project, designed end to end on my own. No live launch, no inflated numbers — just the tangible work it took to bring KINDA SHOPEE to life.</p>
+
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(18px,3vw,30px);" class="k-impact">
+        <sc-for list="{{ impact }}" as="m" hint-placeholder-count="4">
+          <div data-reveal data-reveal-delay="{{ m.delay }}" style="position:relative;display:flex;flex-direction:column;align-items:center;padding:clamp(28px,4vw,40px) 18px clamp(24px,3vw,32px);background:rgba(236,224,200,.04);border:1px solid rgba(202,160,102,.2);border-radius:16px;">
+            <span aria-hidden="true" style="position:absolute;top:0;left:50%;transform:translate(-50%,-50%);width:30px;height:30px;background:#caa066;clip-path:polygon(50% 0,100% 100%,0 100%);"></span>
+            <span style="display:flex;align-items:baseline;gap:3px;font-family:'Shippori Mincho',serif;font-weight:700;line-height:1;color:{{ m.color }};">
+              <span aria-hidden="true" style="font-size:clamp(22px,3vw,30px);">{{ m.arrow }}</span>
+              <span data-counter="{{ m.target }}" style="font-size:clamp(44px,6vw,68px);">0</span>
+              <span style="font-size:clamp(24px,3vw,34px);">{{ m.unit }}</span>
+            </span>
+            <span style="margin-top:14px;font-size:13.5px;letter-spacing:.04em;color:#cbb78f;font-weight:400;">{{ m.label }}</span>
+            <span style="margin-top:5px;font-family:'DM Mono',monospace;font-size:10.5px;color:#8a7350;">{{ m.sub }}</span>
+          </div>
+        </sc-for>
+      </div>
+
+      <!-- closing -->
+      <div data-reveal style="margin-top:clamp(56px,8vw,90px);">
+        <p style="margin:0 auto;font-family:'Shippori Mincho',serif;font-style:italic;font-size:clamp(20px,2.8vw,30px);line-height:1.5;color:#e3d2af;font-weight:500;max-width:26ch;">The quietest interfaces ask the most of their makers and give the most back to the people who use them.</p>
+        <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:14px;margin-top:38px;">
+          <a href="Simran%20Agarwal%20-%20Portfolio.dc.html#work" style="display:inline-flex;align-items:center;gap:10px;background:#caa066;color:#15100c;padding:15px 28px;border-radius:999px;font-size:14px;letter-spacing:.04em;font-weight:500;transition:transform .3s,background .3s;" style-hover="transform:translateY(-2px);background:#d9b87a;">← Back to the temple</a>
+          <a href="Simran%20Agarwal%20-%20Portfolio.dc.html#contact" style="display:inline-flex;align-items:center;gap:10px;background:none;border:1px solid rgba(202,160,102,.4);color:#e3d2af;padding:15px 28px;border-radius:999px;font-size:14px;letter-spacing:.04em;transition:background .3s,border-color .3s;" style-hover="background:rgba(202,160,102,.14);border-color:#caa066;">Start a conversation →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer style="background:#120d09;border-top:1px solid rgba(202,160,102,.14);padding:30px clamp(20px,5vw,42px);">
+    <div style="max-width:1140px;margin:0 auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;">
+      <span style="font-family:'Shippori Mincho',serif;font-size:14px;letter-spacing:.1em;color:#caa066;">⛩ KINDA SHOPEE · A case study by Simran Agarwal</span>
+      <span style="font-family:'DM Mono',monospace;font-size:11.5px;color:#7a6444;">The Journey of a Designer</span>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:860}}">
+class Component extends DCLogic {
+  state = { progress: 0, active: 'k-hero' };
+
+  componentDidMount() {
+    document.documentElement.lang = 'en';
+    try {
+      if (!document.querySelector('main')) {
+        const first = document.getElementById('k-story');
+        if (first) {
+          const main = document.createElement('main');
+          first.parentNode.insertBefore(main, first);
+          ['k-story', 'k-discovery', 'k-path', 'k-tools', 'k-craft', 'k-lessons', 'k-impact'].forEach((id) => {
+            const s = document.getElementById(id);
+            if (s) main.appendChild(s);
+          });
+        }
+      }
+    } catch (e) {}
+    this.reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.root = document.getElementById('karna');
+    this._ids = ['k-hero', 'k-story', 'k-discovery', 'k-path', 'k-tools', 'k-craft', 'k-lessons', 'k-impact'];
+
+    this._onScroll = () => { if (!this._q) { this._q = true; requestAnimationFrame(this._update); } };
+    window.addEventListener('scroll', this._onScroll, { passive: true });
+    window.addEventListener('resize', this._onScroll);
+
+    this._io = new IntersectionObserver((es) => {
+      es.forEach((en) => {
+        if (en.isIntersecting) {
+          const el = en.target;
+          const d = parseInt(el.getAttribute('data-reveal-delay') || '0', 10);
+          el.style.transitionDelay = d + 'ms';
+          el.style.opacity = '1';
+          el.style.transform = 'none';
+          this._io.unobserve(el);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    this._initReveals();
+
+    // counters
+    this._cio = new IntersectionObserver((es) => {
+      es.forEach((en) => {
+        if (en.isIntersecting) { this._runCount(en.target); this._cio.unobserve(en.target); }
+      });
+    }, { threshold: 0.6 });
+    this.root.querySelectorAll('[data-counter]').forEach((el) => this._cio.observe(el));
+
+    this._update();
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this._onScroll);
+    window.removeEventListener('resize', this._onScroll);
+    if (this._io) this._io.disconnect();
+    if (this._cio) this._cio.disconnect();
+  }
+
+  _initReveals() {
+    if (!this.root || !this._io) return;
+    this.root.querySelectorAll('[data-reveal]').forEach((el) => {
+      if (el.__r) return;
+      el.__r = true;
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(28px)';
+      el.style.transition = 'opacity .9s cubic-bezier(.16,.8,.24,1), transform .9s cubic-bezier(.16,.8,.24,1)';
+      this._io.observe(el);
+    });
+  }
+
+  _runCount(el) {
+    const target = parseFloat(el.getAttribute('data-counter')) || 0;
+    if (this.reduced) { el.textContent = String(target); return; }
+    const dur = 1400; const t0 = performance.now();
+    const tick = (now) => {
+      const p = Math.min(1, (now - t0) / dur);
+      const e = 1 - Math.pow(1 - p, 3);
+      el.textContent = String(Math.round(target * e));
+      if (p < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
+
+  _update = () => {
+    this._q = false;
+    const h = document.documentElement;
+    const max = (h.scrollHeight - h.clientHeight) || 1;
+    const pct = Math.max(0, Math.min(1, (window.scrollY || 0) / max));
+    const mid = (window.scrollY || 0) + window.innerHeight * 0.4;
+    let cur = this._ids[0];
+    for (const id of this._ids) { const s = document.getElementById(id); if (s && s.offsetTop <= mid) cur = id; }
+    if (pct !== this.state.progress || cur !== this.state.active) this.setState({ progress: pct, active: cur });
+  };
+
+  _scrollTo(id) {
+    return (e) => {
+      if (e) e.preventDefault();
+      const s = document.getElementById(id);
+      if (s) window.scrollTo({ top: s.offsetTop - 60, behavior: this.reduced ? 'auto' : 'smooth' });
+    };
+  }
+
+  _particles() {
+    const R = React.createElement;
+    const rand = (a, b) => a + Math.random() * (b - a);
+    if (!this._mote) {
+      this._mote = Array.from({ length: 20 }, () => ({ left: rand(2, 96), bottom: rand(0, 50), size: rand(2, 4), op: rand(.2, .5), dur: rand(8, 16), delay: -rand(0, 14) }));
+      this._sym = ['信', '心', '道', '静', '誠'].map((c, i) => ({ c, left: rand(8, 90), bottom: rand(4, 40), dur: rand(13, 20), delay: -rand(0, 18), size: rand(20, 36) }));
+    }
+    const motes = this._mote.map((m, i) => R('div', { key: 'm' + i, 'aria-hidden': true, style: { position: 'absolute', left: m.left + '%', bottom: m.bottom + '%', width: m.size + 'px', height: m.size + 'px', borderRadius: '50%', background: 'rgba(202,160,102,' + m.op + ')', boxShadow: '0 0 7px rgba(202,160,102,.5)', animation: 'kmote ' + m.dur + 's ease-in-out ' + m.delay + 's infinite', willChange: 'transform,opacity' } }));
+    const syms = this._sym.map((s, i) => R('span', { key: 's' + i, 'aria-hidden': true, style: { position: 'absolute', left: s.left + '%', bottom: s.bottom + '%', fontFamily: "'Shippori Mincho',serif", fontSize: s.size + 'px', color: 'rgba(202,160,102,.4)', animation: 'ksymbol ' + s.dur + 's ease-in-out ' + s.delay + 's infinite', willChange: 'transform,opacity' } }, s.c));
+    return R(React.Fragment, null, motes, syms);
+  }
+
+  renderVals() {
+    const active = this.state.active;
+    const secDefs = [
+      { id: 'k-story', label: 'Story' }, { id: 'k-discovery', label: 'Discovery' },
+      { id: 'k-path', label: 'Path' }, { id: 'k-tools', label: 'Tools' },
+      { id: 'k-craft', label: 'Craft' }, { id: 'k-lessons', label: 'Lessons' }, { id: 'k-impact', label: 'Impact' },
+    ];
+    const sections = secDefs.map((s) => {
+      const on = s.id === active;
+      return { label: s.label, href: '#' + s.id, onClick: this._scrollTo(s.id),
+        pillStyle: 'font-size:12px;letter-spacing:.04em;padding:6px 12px;border-radius:999px;transition:all .3s;color:' + (on ? '#15100c' : '#bda783') + ';background:' + (on ? '#caa066' : 'transparent') + ';' };
+    });
+
+    const tldr = [
+      { k: 'Problem', v: 'E-commerce had grown noisy decision fatigue and declining trust at the moment of purchase.' },
+      { k: 'Process', v: 'A self-initiated case study: research, market teardown and journey mapping → a six-step path from question to high-fidelity design.' },
+      { k: 'Solution', v: 'KINDA SHOPEE a calm, trust-led mobile shopping concept with intuitive discovery & checkout.' },
+      { k: 'Outcome', v: 'A complete, self-directed design system and end-to-end mobile flow built entirely on my own.' },
+    ];
+
+    const callPoints = [
+      { t: 'Noise', d: 'Endless feeds, banners and badges competing for one weary tap.', kanji: '騒', delay: 0 },
+      { t: 'Decision fatigue', d: 'Too many near-identical choices, too little guidance to decide.', kanji: '迷', delay: 90 },
+      { t: 'Eroding trust', d: 'Hidden costs and vague reviews made shoppers second-guess.', kanji: '疑', delay: 180 },
+      { t: 'Overwhelm', d: 'Search that demanded the right words for a half-remembered thing.', kanji: '惑', delay: 270 },
+    ];
+
+    const discovery = [
+      { tag: 'Listening', t: 'User interviews', d: '18 shoppers walked me through a real, recent purchase start to regret.', insight: 'People abandon when the price changes after they\u2019ve decided.', tilt: '-2deg', delay: 0 },
+      { tag: 'Friction', t: 'Pain points', d: 'I mapped every hesitation, back-tap and rage-scroll in the flow.', insight: 'The cart, not the catalogue, is where trust is won or lost.', tilt: '1.5deg', delay: 90 },
+      { tag: 'Landscape', t: 'Market analysis', d: 'Teardown of six leading apps for patterns worth keeping and breaking.', insight: 'Everyone optimised for clicks; no one for calm.', tilt: '-1deg', delay: 180 },
+      { tag: 'Behaviour', t: 'Shopping behaviour', d: 'Diary notes on when, why and how impulse turned into intent.', insight: 'Browsing is leisure; checkout is anxiety. Design for both.', tilt: '2deg', delay: 270 },
+    ];
+
+    const path = [
+      { icon: '◔', n: 'Step 01', t: 'Research', d: 'Interviews & field notes', delay: 0 },
+      { icon: '◑', n: 'Step 02', t: 'Insights', d: 'Synthesis & framing', delay: 80 },
+      { icon: '◕', n: 'Step 03', t: 'Wireframes', d: 'Low-fi flows', delay: 160 },
+      { icon: '◴', n: 'Step 04', t: 'Testing', d: 'Usability rounds', delay: 240 },
+      { icon: '◵', n: 'Step 05', t: 'Iteration', d: 'Refine & repeat', delay: 320 },
+      { icon: '●', n: 'Step 06', t: 'Final design', d: 'Polished system', delay: 400 },
+    ];
+
+    const tools = [
+      { icon: '人', t: 'Personas', d: 'Three archetypes the rushed, the researcher and the returner kept every decision anchored to a real need.', delay: 0 },
+      { icon: '径', t: 'Journey maps', d: 'End-to-end emotional maps that exposed exactly where calm turned to anxiety.', delay: 90 },
+      { icon: '流', t: 'User flows', d: 'Branching flows for discovery, purchase and post-order the skeleton of the app.', delay: 180 },
+      { icon: '構', t: 'Information architecture', d: 'A structure shallow enough to feel effortless, deep enough to hold the whole catalogue.', delay: 270 },
+    ];
+
+    const craftRaw = [
+      { img: 'assets/karna-walkthrough.png', alt: 'KINDA SHOPEE onboarding walkthrough screen', step: 'The first breath', t: 'A welcome, not a wall', lead: 'Onboarding leads with a single, generous offer and a calm visual no signup gauntlet before any value is shown.',
+        why: 'First impressions set the emotional tone for the entire session.', solves: 'Aggressive signup walls that make users bounce before they explore.', business: 'Higher activation and a lower first-screen drop-off.' },
+      { img: 'assets/karna-home.png', alt: 'KINDA SHOPEE home screen', step: 'The clearing', t: 'One clear horizon', lead: 'The home screen offers a single hero promotion and a tight trending row breathing room over a wall of products.',
+        why: 'A calm entry point invites exploration instead of overwhelming it.', solves: 'Decision fatigue from dense, undifferentiated product grids.', business: 'Deeper browse sessions and stronger promo engagement.' },
+      { img: 'assets/karna-categories.png', alt: 'KINDA SHOPEE categories screen', step: 'Wayfinding', t: 'Choose by sight, not by word', lead: 'Large, image-led category tiles let people recognise what they want rather than recall its name.',
+        why: 'Visual wayfinding matches how people actually shop a storefront.', solves: 'Text-only menus that hide the breadth of the catalogue.', business: 'More category exploration and cross-sell opportunity.' },
+      { img: 'assets/karna-search.png', alt: 'KINDA SHOPEE search screen with photo and voice search', step: 'When words fail', t: 'Search for the half-remembered', lead: 'Photo and voice search, recent queries and trending products rescue intent when a name won\u2019t come.',
+        why: 'Shoppers often know what something looks like, not what it\u2019s called.', solves: 'Dead-end searches that send high-intent users away empty.', business: 'Recovered intent converts directly into sales.' },
+      { img: 'assets/karna-filter.png', alt: 'KINDA SHOPEE filter screen', step: 'Narrowing the path', t: 'Precision without effort', lead: 'Generous, tactile filters gender, category, price, colour, size narrow thousands of items to the right few.',
+        why: 'Relevance is the fastest route to a confident decision.', solves: 'Irrelevant results that quietly erode trust in the catalogue.', business: 'Faster paths to purchase and fewer returns.' },
+      { img: 'assets/karna-product.png', alt: 'KINDA SHOPEE product detail screen', step: 'The decision', t: 'Everything needed to say yes', lead: 'Reviews, a size chart, transparent pricing and a persistent add-to-cart remove doubt at the deciding moment.',
+        why: 'The product page is where consideration becomes commitment.', solves: 'Uncertainty about fit, value and quality at the point of choice.', business: 'A measurable lift in add-to-cart rate.' },
+      { img: 'assets/karna-cart.png', alt: 'KINDA SHOPEE cart screen', step: 'Carrying it home', t: 'No surprises at the summit', lead: 'A transparent price breakdown, visible coupons and effortless quantity and delete controls close the loop honestly.',
+        why: 'Trust is won or lost in the final, vulnerable step.', solves: 'Hidden costs and clumsy edits that trigger abandonment.', business: 'Higher checkout completion and repeat purchase.' },
+    ];
+    const craft = craftRaw.map((c, i) => ({ ...c, dir: i % 2 === 0 ? 'row' : 'row-reverse' }));
+
+    const lessons = [
+      { n: '一', t: 'Calm is a feature, not a vibe', d: 'Restraint had to be designed and defended at every step every removed element was a deliberate decision, not an absence of one.', delay: 0 },
+      { n: '二', t: 'Trust lives in the last 10%', d: 'The cart and checkout did more for conversion than any flashy discovery feature. Honesty at the end earns the whole journey.', delay: 90 },
+      { n: '三', t: 'Recognition beats recall', d: 'Image-led navigation and photo search consistently outperformed text in testing people shop with their eyes.', delay: 180 },
+      { n: '四', t: 'A system pays compound interest', d: 'Building reusable components early meant later screens took hours, not days and stayed visually coherent for free.', delay: 270 },
+    ];
+
+    const impact = [
+      { arrow: '', target: 30, unit: '+', label: 'Screens designed', sub: 'full end-to-end flow', color: '#caa066', delay: 0 },
+      { arrow: '', target: 7, unit: '', label: 'Core journeys', sub: 'onboarding → checkout', color: '#d9b87a', delay: 90 },
+      { arrow: '', target: 6, unit: '', label: 'Process steps', sub: 'research → final design', color: '#7fc7a0', delay: 180 },
+      { arrow: '', target: 1, unit: '', label: 'Designer', sub: 'self-initiated, solo', color: '#d98a6a', delay: 270 },
+    ];
+
+    return {
+      progressPct: Math.round(this.state.progress * 100) + '%',
+      sections, tldr, callPoints, discovery, path, tools, craft, lessons, impact,
+      particles: this._particles(),
+    };
+  }
+}
+</script>
+</body>
+</html>
